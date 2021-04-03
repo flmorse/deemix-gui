@@ -3,6 +3,8 @@ import type { Debugger } from 'debug'
 
 /**
  * Event listener for HTTP server "error" event.
+ *
+ * @since	0.0.0
  */
 export function getErrorCb (port: number | string | boolean) {
   return (error: any) => {
@@ -32,6 +34,8 @@ export function getErrorCb (port: number | string | boolean) {
 
 /**
  * Event listener for HTTP server "listening" event.
+ *
+ * @since	0.0.0
  */
 export function getListeningCb (server: http.Server, debug: Debugger) {
   return () => {
