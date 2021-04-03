@@ -1,14 +1,15 @@
 import http from 'http'
-
 import express, { Application } from 'express'
 import initDebug from 'debug'
+
+import { registerMiddlewares } from './middlewares'
 
 import indexRouter from './routes'
 import usersRouter from './routes/users'
 
 import { normalizePort } from './helpers/port'
 import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
-import { registerMiddlewares } from './middlewares'
+import { registerApis } from './routes/api/register'
 
 const PORT = normalizePort(process.env.PORT || '6595')
 
@@ -22,6 +23,9 @@ registerMiddlewares(app)
 /* === Routes === */
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+
+/* === APIs === */
+registerApis(app)
 
 /* === Config === */
 app.set('port', PORT)
