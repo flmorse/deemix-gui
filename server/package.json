@@ -5,6 +5,7 @@
   "scripts": {
     "start-old": "node bin/www",
     "start": "nodemon src/app.ts",
+    "start-build": "node dist/app.js",
     "lint": "eslint . --fix",
     "prebuild": "yarn lint",
     "build": "tsc"
