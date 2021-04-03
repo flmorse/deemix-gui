@@ -8,7 +8,7 @@ const router = express.Router()
  * @since	0.0.0
  */
 router.get('/', (_, res) => {
-  res.send('respond with a resource')
+	res.send('respond with a resource')
 })
 
 export default router

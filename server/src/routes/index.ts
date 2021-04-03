@@ -8,7 +8,7 @@ const router = express.Router()
  * @since	0.0.0
  */
 router.get('/', (_, res) => {
-  res.render('index', { title: 'Express' })
+	res.render('index', { title: 'Express' })
 })
 
 export default router

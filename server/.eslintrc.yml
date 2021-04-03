@@ -1,6 +1,7 @@
 ---
 extends:
   - "@nuxtjs"
+  - plugin:prettier/recommended
 plugins:
   - "@typescript-eslint"
 parserOptions:
