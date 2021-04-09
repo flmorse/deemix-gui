@@ -1,4 +1,4 @@
-import sample from './sample'
 import getHome from './getHome'
+import albumSearch from './albumSearch'
 
-export default [sample, getHome]
+export default [albumSearch, getHome]

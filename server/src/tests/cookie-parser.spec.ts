@@ -4,7 +4,7 @@ import request from 'supertest'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 
-describe('request.agent(app)', function () {
+describe('cookie parser', () => {
 	const app = express()
 	app.use(cookieParser())
 
