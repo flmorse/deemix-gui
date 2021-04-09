@@ -1,14 +1,14 @@
 import { RequestHandler } from 'express'
 import { ApiHandler } from '../../../types'
 
-export interface RawAlbumQueryParams {
+export interface RawAlbumQuery {
 	term: string
 	start?: string
 	nb?: string
 	ack: number
 }
 
-export interface AlbumSearchParams extends Omit<RawAlbumQueryParams, 'start' | 'nb'> {
+export interface AlbumSearchParams extends Omit<RawAlbumQuery, 'start' | 'nb'> {
 	start: number
 	nb: number
 }
@@ -16,12 +16,12 @@ export interface AlbumSearchParams extends Omit<RawAlbumQueryParams, 'start' | '
 export interface AlbumResponse {
 	data: any[]
 	total: number
-	ack: RawAlbumQueryParams['ack']
+	ack: RawAlbumQuery['ack']
 }
 
 const path: ApiHandler['path'] = '/album-search/'
 
-const handler: RequestHandler<{}, {}, {}, RawAlbumQueryParams> = (req, res, next) => {
+const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = (req, res, next) => {
 	if (!req.query) {
 		res.status(400).send()
 		next()
@@ -51,7 +51,7 @@ const apiHandler = { path, handler }
 
 export default apiHandler
 
-function parseQuery(query: RawAlbumQueryParams): AlbumSearchParams {
+function parseQuery(query: RawAlbumQuery): AlbumSearchParams {
 	let startingPoint = 0
 
 	if (typeof query.start !== 'undefined') {

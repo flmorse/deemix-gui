@@ -16,6 +16,7 @@ describe('albumSearch requests', () => {
 			responseStatusCollector.push((await request(app).get(uri).send()).status)
 		}
 
+		expect(responseStatusCollector).toMatchObject(new Array(batchCalls.length).fill(200))
 		expect(responseStatusCollector).toMatchObject(new Array(responseStatusCollector.length).fill(200))
 	})
 
