@@ -10,7 +10,7 @@
     "prebuild": "yarn lint",
     "build": "tsc",
     "test": "jest",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watchAll"
   },
   "dependencies": {
     "cookie-parser": "1.4.5",

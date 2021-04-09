@@ -14,7 +14,7 @@ import { registerApis } from './routes/api/register'
 const PORT = normalizePort(process.env.PORT || '6595')
 
 const debug = initDebug('deemix-gui:server')
-const app: Application = express()
+export const app: Application = express()
 const server = http.createServer(app)
 
 /* === Middlewares === */
@@ -31,7 +31,9 @@ registerApis(app)
 app.set('port', PORT)
 
 /* === Server port === */
-server.listen(PORT)
+if (process.env.NODE_ENV !== 'test') {
+	server.listen(PORT)
+}
 
 /* === Server callbacks === */
 server.on('error', getErrorCb(PORT))
