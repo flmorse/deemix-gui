@@ -6,7 +6,6 @@ import initDebug from 'debug'
 import { registerMiddlewares } from './middlewares'
 
 import indexRouter from './routes'
-import usersRouter from './routes/users'
 
 import { normalizePort } from './helpers/port'
 import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
@@ -24,7 +23,6 @@ registerMiddlewares(app)
 
 /* === Routes === */
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
 
 /* === APIs === */
 registerApis(app)
