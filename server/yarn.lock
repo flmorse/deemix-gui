@@ -1118,10 +1118,10 @@ deezer-js@^0.0.3:
     got "^11.8.2"
     tough-cookie "^4.0.0"
 
-deezer-js@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/deezer-js/-/deezer-js-0.0.6.tgz"
-  integrity sha512-EX8dLLzM8hc1a1fWEi9agwu9MW9HjZxoWTEfzPLGpiJkh/Yix4Z1HM6X3KwBh4Uc90TIlzUdePRY3fmbpcZfig==
+deezer-js@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/deezer-js/-/deezer-js-0.0.7.tgz"
+  integrity sha512-DCnIGDvgikWSqJd1GJ5jsJ6ieY9VHLaGLMeizTCoAbDNQqzxMB1wDO+u2KI76dBKZIhVJOAuXTe1gZzok7VjrQ==
   dependencies:
     got "^11.8.2"
     tough-cookie "^4.0.0"
