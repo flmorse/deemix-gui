@@ -1,5 +1,3 @@
-import request from 'supertest'
-import { app } from '../../../app'
 import { appSendGet } from '../../../tests/utils'
 
 describe('albumSearch requests', () => {
@@ -32,7 +30,7 @@ describe('albumSearch requests', () => {
 		]
 
 		for (const uri of batchCalls) {
-			responseStatusCollector.push((await request(app).get(uri).send()).status)
+			responseStatusCollector.push((await appSendGet(uri)).status)
 		}
 
 		expect(responseStatusCollector).toMatchObject(new Array(responseStatusCollector.length).fill(400))
