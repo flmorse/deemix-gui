@@ -1,5 +1,12 @@
-export const logError = (console: any) => (errorText: string) => console.error(`[deemix-server]: ${errorText}`)
-export const consoleError = logError(console)
+import { compose, concat, map } from 'ramda'
+import { IO } from '../functors/IO'
+
+export const consoleErrorIo = IO.of(console.error)
+
+const prependDeemix = concat('[deemix-server]: ')
+
+export const consoleError = (errorText: string) =>
+	map((fn: any) => compose(fn, prependDeemix)(errorText), consoleErrorIo)
 
 export class BadRequestError extends Error {
 	constructor() {

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express'
 import { ApiHandler } from '../../../types'
 import { dz } from '../../../main'
 import { isObjectEmpy } from '../../../helpers/primitive-checks'
-import { BadRequestError, consoleError, isBadRequestError } from '../../../helpers/errors'
+import { BadRequestError, isBadRequestError, consoleError } from '../../../helpers/errors'
 
 export interface RawChartTracksQuery {
 	id: string
@@ -27,7 +27,7 @@ const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (req, res
 		next()
 	} catch (error) {
 		if (isBadRequestError(error)) {
-			consoleError(error.message)
+			consoleError(error.message).unsafePerformIO()
 			res.status(400).send()
 			return next()
 		}
