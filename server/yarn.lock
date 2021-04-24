@@ -823,7 +823,7 @@
   dependencies:
     "@types/superagent" "*"
 
-"@types/ws@^7.4.1":
+"@types/ws@7.4.1":
   version "7.4.1"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.4.1.tgz#49eacb15a0534663d53a36fbf5b4d98f5ae9a73a"
   integrity sha512-ISCK1iFnR+jYv7+jLNX0wDqesZ/5RAeY3wUx6QaphmocphU61h+b+PHjS18TF4WIPTu/MMzxIq2PHr32o2TS5Q==
@@ -1859,7 +1859,7 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@^0.0.1:
+deemix@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.0.1.tgz#5f0fd4802133894dcb39c99a180fa0190d7f54a0"
   integrity sha512-Izr64y+b+VMPgByZe1v0kirjaFddX0P6uS4MykgiJXyA7bl6Gc9aMM73eDvJFMbanUmeDgoWOBMUXZ9WYxuh/Q==
@@ -1885,18 +1885,18 @@ deepmerge@^4.0.0, deepmerge@^4.2.2:
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
 
-deezer-js@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-0.0.3.tgz#6e91c285ca1c2df497c8b42c26a7130f4234f518"
-  integrity sha512-Nr3ZKZb4NN0onOcFEpUYvSx01Ka7CgJEGgdHcqD9Mlk+KRtMcrWIcmKwheLtHEyZq/W+KTZW3sNG6wPTeWdj+w==
+deezer-js@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-0.0.7.tgz#7fd1146a8d5c389a393dd3db80f5d2839c1b3bec"
+  integrity sha512-DCnIGDvgikWSqJd1GJ5jsJ6ieY9VHLaGLMeizTCoAbDNQqzxMB1wDO+u2KI76dBKZIhVJOAuXTe1gZzok7VjrQ==
   dependencies:
     got "^11.8.2"
     tough-cookie "^4.0.0"
 
-deezer-js@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-0.0.7.tgz#7fd1146a8d5c389a393dd3db80f5d2839c1b3bec"
-  integrity sha512-DCnIGDvgikWSqJd1GJ5jsJ6ieY9VHLaGLMeizTCoAbDNQqzxMB1wDO+u2KI76dBKZIhVJOAuXTe1gZzok7VjrQ==
+deezer-js@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-0.0.3.tgz#6e91c285ca1c2df497c8b42c26a7130f4234f518"
+  integrity sha512-Nr3ZKZb4NN0onOcFEpUYvSx01Ka7CgJEGgdHcqD9Mlk+KRtMcrWIcmKwheLtHEyZq/W+KTZW3sNG6wPTeWdj+w==
   dependencies:
     got "^11.8.2"
     tough-cookie "^4.0.0"
@@ -2150,10 +2150,10 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@^8.1.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
-  integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+eslint-config-prettier@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.1.0.tgz#4ef1eaf97afe5176e6a75ddfb57c335121abc5a6"
+  integrity sha512-oKMhGv3ihGbCIimCAjqkdzx2Q+jthoqnXSP+d86M9tptwugycmTFdVR4IpLgq2c4SHifbwO90z2fQ8/Aio73yw==
 
 eslint-config-standard@^16.0.2:
   version "16.0.2"
@@ -6300,7 +6300,7 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@^7.4.4, ws@^7.4.5:
+ws@7.4.5, ws@^7.4.4:
   version "7.4.5"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.5.tgz#a484dd851e9beb6fdb420027e3885e8ce48986c1"
   integrity sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==
