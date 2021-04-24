@@ -16,7 +16,7 @@
     "cookie-parser": "1.4.5",
     "debug": "2.6.9",
     "deemix": "0.0.1",
-    "deezer-js": "0.0.7",
+    "deezer-js": "0.0.8",
     "express": "4.17.1",
     "morgan": "1.10.0",
     "ramda": "0.27.1",
