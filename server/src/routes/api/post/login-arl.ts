@@ -1,4 +1,6 @@
 import { RequestHandler } from 'express'
+// @ts-expect-error
+import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
 import { dz } from '../../../main'
 
@@ -28,7 +30,14 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, n
 		loginParams.push(req.query.child)
 	}
 
-	const response = await dz.login_via_arl(...loginParams)
+	let response
+
+	if (process.env.NODE_ENV !== 'test') {
+		response = await dz.login_via_arl(...loginParams)
+	} else {
+		const testDz = new Deezer()
+		response = await testDz.login_via_arl(...loginParams)
+	}
 
 	res.status(200).send(response)
 	next()
