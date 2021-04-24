@@ -1,5 +1,6 @@
 import { compose } from 'ramda'
 
+// https://mostly-adequate.gitbook.io/mostly-adequate-guide/appendix_b#io
 export class IO {
 	public unsafePerformIO: any
 
