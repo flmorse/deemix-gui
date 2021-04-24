@@ -1,5 +1,6 @@
 import request from 'supertest'
 import { app } from '../../../app'
+import { appSendGet } from '../../../tests/utils'
 
 describe('albumSearch requests', () => {
 	it('should respond 200 to calls with term', async () => {
@@ -13,7 +14,7 @@ describe('albumSearch requests', () => {
 		]
 
 		for (const uri of batchCalls) {
-			responseStatusCollector.push((await request(app).get(uri).send()).status)
+			responseStatusCollector.push((await appSendGet(uri)).status)
 		}
 
 		expect(responseStatusCollector).toMatchObject(new Array(batchCalls.length).fill(200))
@@ -37,5 +38,15 @@ describe('albumSearch requests', () => {
 		expect(responseStatusCollector).toMatchObject(new Array(responseStatusCollector.length).fill(400))
 	})
 
-	it.todo('should respond the desired search result')
+	it('should respond the desired search result', async () => {
+		const res = (await appSendGet('/api/album-search/?term=eminem')).body
+
+		expect(res.data.data.length).not.toBe(0)
+	})
+
+	it('should respond the desired search result with a start parameter', async () => {
+		const res = (await appSendGet('/api/album-search/?term=eminem?start=10')).body
+
+		expect(res.data.data.length).not.toBe(0)
+	})
 })

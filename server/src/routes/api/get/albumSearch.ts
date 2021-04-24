@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import { ApiHandler } from '../../../types'
+import { dz } from '../../../main'
 
 export interface RawAlbumQuery {
 	term: string
@@ -21,28 +22,28 @@ export interface AlbumResponse {
 
 const path: ApiHandler['path'] = '/album-search/'
 
-const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = (req, res, next) => {
+const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = async (req, res, next) => {
 	if (!req.query) {
 		res.status(400).send()
-		next()
+		return next()
 	}
 
-	const { term } = parseQuery(req.query)
+	const { term, start, nb, ack } = parseQuery(req.query)
 
 	if (!term || term.trim() === '') {
 		res.status(400).send()
-		next()
+		return next()
 	}
 
-	// const albums = getAlbums(term, start, nb)
+	const albums = await dz.api.search_album(term, { start, nb })
 
-	// const output: AlbumResponse = {
-	// 	data: albums,
-	// 	total: albums.length,
-	// 	ack
-	// }
+	const output: AlbumResponse = {
+		data: albums,
+		total: albums.data.length,
+		ack
+	}
 
-	// res.send(output)
+	res.send(output)
 	res.send()
 	next()
 }

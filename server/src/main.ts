@@ -2,7 +2,7 @@
 import { Deezer } from 'deezer-js'
 
 console.log('init!')
-const dz = new Deezer()
+export const dz = new Deezer()
 let homeCache: any, chartsCache: any
 
 export async function getHome() {
