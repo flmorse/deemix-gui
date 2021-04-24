@@ -1,3 +1,3 @@
-import { ApiHandler } from '../../../types'
+import loginArl from './login-arl'
 
-export default [] as ApiHandler[]
+export default [loginArl]
