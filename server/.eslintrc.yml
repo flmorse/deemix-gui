@@ -13,3 +13,4 @@ rules:
       argsIgnorePattern: ^_
   no-unused-vars: off
   no-console: off
+  camelcase: off

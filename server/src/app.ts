@@ -1,6 +1,6 @@
 import http from 'http'
 import express, { Application } from 'express'
-import { Server as wsServer } from 'ws'
+import { Server as WsServer } from 'ws'
 import initDebug from 'debug'
 
 import { registerMiddlewares } from './middlewares'
@@ -15,7 +15,7 @@ const PORT = normalizePort(process.env.PORT || '6595')
 
 const debug = initDebug('deemix-gui:server')
 export const app: Application = express()
-const ws = new wsServer({ noServer: true })
+const ws = new WsServer({ noServer: true })
 const server = http.createServer(app)
 
 /* === Middlewares === */

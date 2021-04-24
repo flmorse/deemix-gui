@@ -27,7 +27,7 @@ const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = (req, res, next) => {
 		next()
 	}
 
-	const { term, start, nb, ack } = parseQuery(req.query)
+	const { term } = parseQuery(req.query)
 
 	if (!term || term.trim() === '') {
 		res.status(400).send()
