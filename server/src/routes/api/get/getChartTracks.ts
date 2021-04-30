@@ -10,7 +10,7 @@ export interface RawChartTracksQuery {
 	limit?: number
 }
 
-const path: ApiHandler['path'] = '/get-chart-tracks'
+const path: ApiHandler['path'] = '/getChartTracks'
 
 const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (req, res, next) => {
 	try {

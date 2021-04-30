@@ -1,11 +1,15 @@
 import { ApiHandler } from '../../../types'
-import { getHome } from '../../../main'
+import { dz } from '../../../main'
 
 const path: ApiHandler['path'] = '/getHome'
 
+let homeCache: any
+
 const handler: ApiHandler['handler'] = async (_, res) => {
-	const homeData = await getHome()
-	res.send(homeData)
+	if (!homeCache) {
+		homeCache = await dz.api.get_chart(0, { limit: 30 })
+	}
+	res.send(homeCache)
 }
 
 const apiHandler: ApiHandler = { path, handler }
