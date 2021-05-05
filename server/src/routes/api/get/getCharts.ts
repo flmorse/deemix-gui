@@ -1,12 +1,17 @@
 import { ApiHandler } from '../../../types'
-import { dz } from '../../../main'
+// @ts-expect-error
+import { Deezer } from 'deezer-js'
+import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/getCharts'
 
 let chartsCache: any
 
-const handler: ApiHandler['handler'] = async (_, res) => {
+const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!chartsCache) {
+		if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+		let dz = sessionDZ[req.session.id]
+
 		const chartsData = await dz.api.get_countries_charts()
 		const countries: any[] = []
 		chartsData.forEach((country: any) => {

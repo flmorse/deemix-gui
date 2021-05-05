@@ -1,9 +1,14 @@
 import { ApiHandler } from '../../../types'
-import { dz } from '../../../main'
+// @ts-expect-error
+import { Deezer } from 'deezer-js'
+import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/getTracklist'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
+	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+	let dz = sessionDZ[req.session.id]
+
 	let list_id = String(req.query.id)
 	let list_type = String(req.query.type)
 	switch (list_type) {

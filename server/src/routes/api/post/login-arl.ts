@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
+import { sessionDZ } from '../../../main'
 import { ApiHandler } from '../../../types'
-import { dz } from '../../../main'
 
 export interface RawLoginArlQuery {
 	arl: string
@@ -12,6 +12,9 @@ export interface RawLoginArlQuery {
 const path: ApiHandler['path'] = '/login-arl/'
 
 const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, next) => {
+	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+	let dz = sessionDZ[req.session.id]
+
 	if (!req.query) {
 		res.status(400).send()
 		return next()

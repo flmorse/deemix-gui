@@ -6,6 +6,11 @@ import getTracklist from './getTracklist'
 import albumSearch from './albumSearch'
 import getChartTracks from './getChartTracks'
 import getSettings from './getSettings'
+import getUserTracks from './getUserTracks'
+import getUserAlbums from './getUserAlbums'
+import getUserArtists from './getUserArtists'
+import getUserPlaylists from './getUserPlaylists'
+import getUserFavorites from './getUserFavorites'
 
 export default [
   albumSearch,
@@ -15,5 +20,10 @@ export default [
   mainSearch,
   search,
   getTracklist,
-  getSettings
+  getSettings,
+  getUserTracks,
+  getUserAlbums,
+  getUserArtists,
+  getUserPlaylists,
+  getUserFavorites
 ]

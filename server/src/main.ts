@@ -4,4 +4,5 @@ import { Deezer } from 'deezer-js'
 import deemix from 'deemix'
 
 export let settings: any = deemix.settings.load()
-export const dz = new Deezer(settings.tagsLanguage)
+export const defaultSettings: any = deemix.settings.DEFAULTS
+export let sessionDZ: any = {}

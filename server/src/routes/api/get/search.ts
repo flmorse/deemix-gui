@@ -1,9 +1,14 @@
 import { ApiHandler } from '../../../types'
-import { dz } from '../../../main'
+// @ts-expect-error
+import { Deezer } from 'deezer-js'
+import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/search'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
+	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+	let dz = sessionDZ[req.session.id]
+
 	const term = String(req.query.term)
 	const type = String(req.query.type)
 	const start = parseInt(String(req.query.start))

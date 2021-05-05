@@ -1,6 +1,9 @@
 import { RequestHandler } from 'express'
 import { ApiHandler } from '../../../types'
-import { dz } from '../../../main'
+// @ts-expect-error
+import { Deezer } from 'deezer-js'
+import { sessionDZ } from '../../../main'
+
 import { isObjectEmpy } from '../../../helpers/primitive-checks'
 import { BadRequestError, isBadRequestError, consoleError } from '../../../helpers/errors'
 
@@ -14,6 +17,9 @@ const path: ApiHandler['path'] = '/getChartTracks'
 
 const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (req, res, next) => {
 	try {
+		if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+		let dz = sessionDZ[req.session.id]
+
 		if (isObjectEmpy(req.query) || !req.query.id) {
 			throw new BadRequestError()
 		}
