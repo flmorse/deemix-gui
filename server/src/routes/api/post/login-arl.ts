@@ -9,6 +9,14 @@ export interface RawLoginArlQuery {
 	child?: number
 }
 
+const LoginStatus = {
+	NOT_AVAILABLE: -1,
+	FAILED: 0,
+	SUCCESS: 1,
+	ALREADY_LOGGED: 2,
+	FORCED_SUCCESS: 3
+}
+
 const path: ApiHandler['path'] = '/login-arl/'
 
 const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, next) => {
@@ -36,13 +44,20 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, n
 	let response
 
 	if (process.env.NODE_ENV !== 'test') {
-		response = await dz.login_via_arl(...loginParams)
+		if (!dz.logged_in){
+			response = await dz.login_via_arl(...loginParams)
+			response = response ? 1 : 0
+		} else {
+			response = LoginStatus.ALREADY_LOGGED
+		}
 	} else {
 		const testDz = new Deezer()
 		response = await testDz.login_via_arl(...loginParams)
 	}
+	console.log(response)
+	let returnValue = {status: response, arl: req.query.arl, user: dz.current_user}
 
-	res.status(200).send(response)
+	res.status(200).send(returnValue)
 	next()
 }
 

@@ -18,12 +18,12 @@ const handler: ApiHandler['handler'] = async (req, res) => {
       let data
       data = await dz.api.get_user_playlists(userID, {limit: -1})
       result['playlists'] = data.data
-      data = await dz.api.get_user_playlists(userID, {limit: -1})
-      result['playlists'] = data.data
-      data = await dz.api.get_user_playlists(userID, {limit: -1})
-      result['playlists'] = data.data
-      data = await dz.api.get_user_playlists(userID, {limit: -1})
-      result['playlists'] = data.data
+      data = await dz.api.get_user_albums(userID, {limit: -1})
+      result['albums'] = data.data
+      data = await dz.api.get_user_artists(userID, {limit: -1})
+      result['artists'] = data.data
+      data = await dz.api.get_user_tracks(userID, {limit: -1})
+      result['tracks'] = data.data
     } catch {
       result['playlists'] = await dz.gw.get_user_playlists(userID, {limit: -1})
       result['albums'] = await dz.gw.get_user_albums(userID, {limit: -1})
