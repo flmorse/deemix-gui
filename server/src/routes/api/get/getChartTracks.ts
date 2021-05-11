@@ -33,7 +33,7 @@ const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (req, res
 		next()
 	} catch (error) {
 		if (isBadRequestError(error)) {
-			consoleError(error.message).unsafePerformIO()
+			consoleError(error.message)
 			res.status(400).send()
 			return next()
 		}
