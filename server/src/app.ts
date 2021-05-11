@@ -10,12 +10,13 @@ import indexRouter from './routes'
 import { normalizePort } from './helpers/port'
 import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
 import { registerApis } from './routes/api/register'
+import { registerWebsocket } from './websocket'
 
 const PORT = normalizePort(process.env.PORT || '6595')
 
 const debug = initDebug('deemix-gui:server')
 export const app: Application = express()
-const wss = new WsServer({ noServer: true })
+export const wss = new WsServer({ noServer: true })
 const server = http.createServer(app)
 
 /* === Middlewares === */
@@ -35,11 +36,7 @@ if (process.env.NODE_ENV !== 'test') {
 	server.listen(PORT)
 }
 
-wss.on('connection', ws => {
-	ws.on('message', message => {
-		console.log('received: %s', message)
-	})
-})
+registerWebsocket(wss)
 
 /* === Server callbacks === */
 server.on('upgrade', (request, socket, head) => {
