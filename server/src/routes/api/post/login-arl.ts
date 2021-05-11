@@ -21,7 +21,7 @@ const path: ApiHandler['path'] = '/login-arl/'
 
 const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, next) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
-	let dz = sessionDZ[req.session.id]
+	const dz = sessionDZ[req.session.id]
 
 	if (!req.query) {
 		res.status(400).send()
@@ -44,7 +44,7 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, n
 	let response
 
 	if (process.env.NODE_ENV !== 'test') {
-		if (!dz.logged_in){
+		if (!dz.logged_in) {
 			response = await dz.login_via_arl(...loginParams)
 			response = response ? 1 : 0
 		} else {
@@ -55,7 +55,7 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, n
 		response = await testDz.login_via_arl(...loginParams)
 	}
 	console.log(response)
-	let returnValue = {status: response, arl: req.query.arl, user: dz.current_user}
+	const returnValue = { status: response, arl: req.query.arl, user: dz.current_user }
 
 	res.status(200).send(returnValue)
 	next()

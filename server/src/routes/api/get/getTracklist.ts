@@ -1,20 +1,20 @@
-import { ApiHandler } from '../../../types'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
+import { ApiHandler } from '../../../types'
 import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/getTracklist'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
-	let dz = sessionDZ[req.session.id]
+	const dz = sessionDZ[req.session.id]
 
-	let list_id = String(req.query.id)
-	let list_type = String(req.query.type)
+	const list_id = String(req.query.id)
+	const list_type = String(req.query.type)
 	switch (list_type) {
 		case 'artist': {
 			const artistAPI = await dz.api.get_artist(list_id)
-			artistAPI.releases = await dz.gw.get_artist_discography_tabs(list_id, {limit: 100})
+			artistAPI.releases = await dz.gw.get_artist_discography_tabs(list_id, { limit: 100 })
 			res.send(artistAPI)
 			break
 		}

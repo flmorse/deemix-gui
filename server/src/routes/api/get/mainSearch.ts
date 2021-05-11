@@ -1,16 +1,16 @@
-import { ApiHandler } from '../../../types'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
+import { ApiHandler } from '../../../types'
 import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/mainSearch'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
-	let dz = sessionDZ[req.session.id]
+	const dz = sessionDZ[req.session.id]
 
 	const term = String(req.query.term)
-	let results = await dz.gw.search(term)
+	const results = await dz.gw.search(term)
 	const order: string[] = []
 	results.ORDER.forEach((element: string) => {
 		if (['TOP_RESULT', 'TRACK', 'ALBUM', 'ARTIST', 'PLAYLIST'].includes(element)) order.push(element)

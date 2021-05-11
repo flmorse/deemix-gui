@@ -1,20 +1,20 @@
-import { ApiHandler } from '../../../types'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
+import { ApiHandler } from '../../../types'
 import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/search'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
-	let dz = sessionDZ[req.session.id]
+	const dz = sessionDZ[req.session.id]
 
 	const term = String(req.query.term)
 	const type = String(req.query.type)
 	const start = parseInt(String(req.query.start))
 	const nb = parseInt(String(req.query.nb))
 
-	let data;
+	let data
 
 	switch (type) {
 		case 'track':
@@ -39,7 +39,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 			data = await dz.api.search(term, { limit: nb, index: start })
 			break
 	}
-	
+
 	data.type = type
 	res.send(data)
 }

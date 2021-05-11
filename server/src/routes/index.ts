@@ -16,14 +16,14 @@ router.get('/', (_, res) => {
 
 router.get('/connect', (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
-	let dz = sessionDZ[req.session.id]
+	const dz = sessionDZ[req.session.id]
 
 	res.send({
 		update: {
-			currentCommit: "testing",
-			latestCommit: "testing",
+			currentCommit: 'testing',
+			latestCommit: 'testing',
 			updateAvailable: false,
-			deemixVersion: "3.0_beta"
+			deemixVersion: '3.0_beta'
 		},
 		autologin: !dz.logged_in,
 		currentUser: dz.current_user,

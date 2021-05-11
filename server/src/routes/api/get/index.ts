@@ -13,17 +13,17 @@ import getUserPlaylists from './getUserPlaylists'
 import getUserFavorites from './getUserFavorites'
 
 export default [
-  albumSearch,
-  getHome,
-  getCharts,
-  getChartTracks,
-  mainSearch,
-  search,
-  getTracklist,
-  getSettings,
-  getUserTracks,
-  getUserAlbums,
-  getUserArtists,
-  getUserPlaylists,
-  getUserFavorites
+	albumSearch,
+	getHome,
+	getCharts,
+	getChartTracks,
+	mainSearch,
+	search,
+	getTracklist,
+	getSettings,
+	getUserTracks,
+	getUserAlbums,
+	getUserArtists,
+	getUserPlaylists,
+	getUserFavorites
 ]
