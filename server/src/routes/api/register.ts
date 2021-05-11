@@ -35,7 +35,7 @@ const methods: Method[] = [
 export function registerApis(app: Application) {
 	methods.forEach(({ method, endpoints }) => {
 		endpoints.forEach(endpoint => {
-			// @ts-ignore
+			// @ts-expect-error
 			app[method](prependApiPath(endpoint.path), endpoint.handler)
 		})
 	})
