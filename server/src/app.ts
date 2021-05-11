@@ -15,7 +15,7 @@ const PORT = normalizePort(process.env.PORT || '6595')
 
 const debug = initDebug('deemix-gui:server')
 export const app: Application = express()
-const ws = new WsServer({ noServer: true })
+const wss = new WsServer({ noServer: true })
 const server = http.createServer(app)
 
 /* === Middlewares === */
@@ -35,10 +35,16 @@ if (process.env.NODE_ENV !== 'test') {
 	server.listen(PORT)
 }
 
+wss.on('connection', ws => {
+	ws.on('message', message => {
+		console.log('received: %s', message)
+	})
+})
+
 /* === Server callbacks === */
 server.on('upgrade', (request, socket, head) => {
-	ws.handleUpgrade(request, socket, head, socket => {
-		ws.emit('connection', socket, request)
+	wss.handleUpgrade(request, socket, head, socket => {
+		wss.emit('connection', socket, request)
 	})
 })
 server.on('error', getErrorCb(PORT))
