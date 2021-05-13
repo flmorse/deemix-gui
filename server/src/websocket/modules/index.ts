@@ -1,3 +1,3 @@
-import connection from './connection'
+import saveSettings from './saveSettings'
 
-export default [connection]
+export default [saveSettings]

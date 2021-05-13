@@ -1,6 +1,12 @@
 // @ts-expect-error
 import deemix from 'deemix'
 
-export const settings: any = deemix.settings.load()
+export const loadSettings = deemix.settings.load
 export const defaultSettings: any = deemix.settings.DEFAULTS
-export const sessionDZ: any = {}
+export let settings: any = loadSettings()
+export let sessionDZ: any = {}
+
+export function saveSettings(newSettings: any) {
+  deemix.settings.save(newSettings)
+  settings = newSettings
+}
