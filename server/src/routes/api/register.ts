@@ -1,6 +1,5 @@
 import type { Application } from 'express'
 import type { ApiHandler } from '../../types'
-
 import getEndpoints from './get'
 import deleteEndpoints from './delete'
 import postEndpoints from './post'
@@ -38,5 +37,10 @@ export function registerApis(app: Application) {
 			// @ts-expect-error
 			app[method](prependApiPath(endpoint.path), endpoint.handler)
 		})
+	})
+
+	// Fallback, for SPA mode
+	app.get('*', (_, res) => {
+		res.redirect('/')
 	})
 }
