@@ -11,6 +11,7 @@ import getUserAlbums from './getUserAlbums'
 import getUserArtists from './getUserArtists'
 import getUserPlaylists from './getUserPlaylists'
 import getUserFavorites from './getUserFavorites'
+import getQueue from './getQueue'
 
 export default [
 	albumSearch,
@@ -25,5 +26,6 @@ export default [
 	getUserAlbums,
 	getUserArtists,
 	getUserPlaylists,
-	getUserFavorites
+	getUserFavorites,
+	getQueue
 ]

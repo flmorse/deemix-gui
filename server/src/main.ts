@@ -32,9 +32,11 @@ export function saveSettings(newSettings: any) {
 	settings = newSettings
 }
 
-export const queueOrder: string[] = []
-export const queue: any = {}
-let currentJob: any = null
+export let queueOrder: string[] = []
+export let queue: any = {}
+export let currentJob: any = null
+
+restoreQueueFromDisk()
 
 export async function addToQueue(dz: any, url: string, bitrate: number) {
 	if (!dz.logged_in) throw new NotLoggedIn()
@@ -58,7 +60,12 @@ export async function addToQueue(dz: any, url: string, bitrate: number) {
 		queueOrder.push(downloadObj.uuid)
 		fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
 		queue[downloadObj.uuid] = downloadObj.getEssentialDict()
-		fs.writeFileSync(configFolder + `queue${sep}${downloadObj.uuid}.json`, JSON.stringify(downloadObj.toDict()))
+		queue[downloadObj.uuid].status = "inQueue"
+
+		let savedObject = downloadObj.toDict()
+		savedObject.status = "inQueue"
+		fs.writeFileSync(configFolder + `queue${sep}${downloadObj.uuid}.json`, JSON.stringify(savedObject))
+
 		slimmedObjects.push(downloadObj.getSlimmedDict())
 	})
 	if (isSingleObject) listener.send('addedToQueue', downloadObjs[0].getSlimmedDict())
@@ -76,7 +83,7 @@ async function startQueue(dz: any): Promise<any> {
 		}
 		currentJob = true // lock currentJob
 
-		const currentUUID: string | undefined = queueOrder.shift()
+		const currentUUID: string = queueOrder.shift() || ""
 		const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${currentUUID}.json`).toString())
 		let downloadObject: any
 		switch (currentItem.__type__) {
@@ -93,7 +100,65 @@ async function startQueue(dz: any): Promise<any> {
 		}
 		currentJob = new Downloader(dz, downloadObject, settings, listener)
 		listener.send('startDownload', currentUUID)
+		queue[currentUUID].status = "downloading"
 		await currentJob.start()
+
+		// Set status
+		if (downloadObject.failed == downloadObject.size){
+			queue[currentUUID].status = "failed"
+		} else if(downloadObject.failed > 0){
+			queue[currentUUID].status = "withErrors"
+		} else {
+			queue[currentUUID].status = "completed"
+		}
+
+		let savedObject = downloadObject.getSlimmedDict()
+		savedObject.status = queue[currentUUID].status
+
+		// Save queue status
+		fs.writeFileSync(configFolder + `queue${sep}${currentUUID}.json`, JSON.stringify(savedObject))
+		fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
+
 		currentJob = null
 	} while (queueOrder.length)
+}
+
+export function clearCompletedDownloads(){
+	Object.values(queue).forEach((downloadObject: any) => {
+		if (downloadObject.status === "completed"){
+			fs.unlinkSync(configFolder + `queue${sep}${downloadObject.uuid}.json`)
+			delete queue[downloadObject.uuid]
+		}
+	})
+	listener.send("removedFinishedDownloads")
+}
+
+export function restoreQueueFromDisk(){
+	if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')
+	const allItems: string[] = fs.readdirSync(configFolder + 'queue')
+	allItems.forEach((filename: string) => {
+		if (filename == 'order.json'){
+			queueOrder = JSON.parse(fs.readFileSync(configFolder + `queue${sep}order.json`).toString())
+		} else {
+			const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${filename}`).toString())
+			if (currentItem.status === 'inQueue'){
+				let downloadObject: any
+				switch (currentItem.__type__) {
+					case 'Single':
+						downloadObject = new Single(currentItem)
+						break
+					case 'Collection':
+						downloadObject = new Collection(currentItem)
+						break
+					case 'Convertable':
+						downloadObject = new Convertable(currentItem)
+						break
+				}
+				queue[downloadObject.uuid] = downloadObject.getEssentialDict()
+				queue[downloadObject.uuid].status = "inQueue"
+			} else {
+				queue[currentItem.uuid] = currentItem
+			}
+		}
+	})
 }
