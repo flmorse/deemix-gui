@@ -6,14 +6,6 @@ import wsModules from './modules'
 // ? Is this needed?
 // ? https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
 
-export const broadcast = function(wss:WsServer, key:string, data:any) {
-	wss.clients.forEach(client => {
-		if (client.readyState === WebSocket.OPEN) {
-			client.send(JSON.stringify({key, data}))
-		}
-	})
-}
-
 export const registerWebsocket = (wss: WsServer) => {
 	wss.on('connection', ws => {
 		ws.on('message', (message)=>{
