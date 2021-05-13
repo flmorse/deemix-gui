@@ -1,6 +1,6 @@
 import type { Application } from 'express'
-import logger from 'morgan'
 import express from 'express'
+import logger from 'morgan'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 

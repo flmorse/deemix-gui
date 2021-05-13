@@ -3,7 +3,7 @@ import { settings, defaultSettings } from '../../../main'
 
 const path: ApiHandler['path'] = '/getSettings'
 
-const handler: ApiHandler['handler'] = async (_, res) => {
+const handler: ApiHandler['handler'] = (_, res) => {
 	res.send({ settings, defaultSettings })
 }
 
