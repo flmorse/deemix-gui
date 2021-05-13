@@ -1,10 +1,16 @@
 import { Server as WsServer } from 'ws'
 import { consoleInfo } from '../../helpers/errors'
 import { saveSettings, listener } from '../../main'
+import { Settings, SpotifySettings } from '../../types'
 
 const eventName = 'saveSettings'
 
-const cb = (data: any, _: any, __: WsServer) => {
+export interface SaveSettingsData {
+	settings: Settings
+	spotifySettings: SpotifySettings
+}
+
+const cb = (data: SaveSettingsData, _: any, __: WsServer) => {
 	const { settings, spotifySettings } = data
 	saveSettings(settings)
 	consoleInfo('Settings saved')
