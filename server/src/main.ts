@@ -37,23 +37,35 @@ export let currentJob: any = null
 export async function addToQueue(dz: any, url: string, bitrate: number){
   if (!dz.logged_in) throw new NotLoggedIn
   console.log(`Adding ${url} to queue`)
-  let downloadObj = await deemix.generateDownloadObject(dz, url, bitrate, deemixPlugins, listener)
+  let downloadObjs = await deemix.generateDownloadObject(dz, url, bitrate, deemixPlugins, listener)
+  let isSingleObject = !Array.isArray(downloadObjs)
+  console.log(downloadObjs)
 
-  // Check if element is already in queue
-  if (queueOrder.includes(downloadObj.uuid))
-    throw new AlreadyInQueue(downloadObj.getEssentialDict())
+  if (isSingleObject) downloadObjs = [downloadObjs]
 
-  // Save queue status when adding something to the queue
-  if (!fs.existsSync(configFolder+'queue')) fs.mkdirSync(configFolder+'queue')
+  let slimmedObjects: any[] = []
 
-  queueOrder.push(downloadObj.uuid)
-  fs.writeFileSync(configFolder+`queue${sep}order.json`, JSON.stringify(queueOrder))
-  queue[downloadObj.uuid] = downloadObj.getEssentialDict()
-  fs.writeFileSync(configFolder+`queue${sep}${downloadObj.uuid}.json`, JSON.stringify(downloadObj.toDict()))
-  listener.send('addedToQueue', downloadObj.getSlimmedDict())
+  downloadObjs.forEach(async (downloadObj: any) => {
+    // Check if element is already in queue
+    if (queueOrder.includes(downloadObj.uuid))
+      throw new AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject)
+
+    // Save queue status when adding something to the queue
+    if (!fs.existsSync(configFolder+'queue')) fs.mkdirSync(configFolder+'queue')
+
+    queueOrder.push(downloadObj.uuid)
+    fs.writeFileSync(configFolder+`queue${sep}order.json`, JSON.stringify(queueOrder))
+    queue[downloadObj.uuid] = downloadObj.getEssentialDict()
+    fs.writeFileSync(configFolder+`queue${sep}${downloadObj.uuid}.json`, JSON.stringify(downloadObj.toDict()))
+    slimmedObjects.push(downloadObj.getSlimmedDict())
+  })
+  if (isSingleObject)
+    listener.send('addedToQueue', downloadObjs[0].getSlimmedDict())
+  else
+    listener.send('addedToQueue', slimmedObjects)
 
   startQueue(dz)
-  return queue[downloadObj.uuid]
+  return slimmedObjects
 }
 
 async function startQueue(dz: any): Promise<any>{
@@ -95,10 +107,12 @@ class QueueError extends Error {
 
 class AlreadyInQueue extends QueueError {
   item: any
-  constructor(dwObj: any) {
+  silent: boolean
+  constructor(dwObj: any, silent: boolean) {
     super(`${dwObj.artist} - ${dwObj.title} is already in queue.`)
     this.name = "AlreadyInQueue"
     this.item = dwObj
+    this.silent = silent
   }
 }
 
