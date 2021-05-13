@@ -17,7 +17,7 @@ export const sessionDZ: any = {}
 const deemixPlugins = {}
 
 export const listener = {
-	send(key: string, data: any) {
+	send(key: string, data?: any) {
 		console.log(key, data)
 		wss.clients.forEach(client => {
 			if (client.readyState === WebSocket.OPEN) {

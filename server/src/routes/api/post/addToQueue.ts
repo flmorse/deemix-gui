@@ -1,7 +1,7 @@
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
-import { sessionDZ, addToQueue, settings } from '../../../main'
+import { sessionDZ, addToQueue, settings, listener } from '../../../main'
 
 const path: ApiHandler['path'] = '/addToQueue'
 
@@ -19,13 +19,16 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	} catch (e) {
 		switch (e.name) {
 			case 'AlreadyInQueue':
-				res.send({ result: false, errid: e.name, data: { url, bitrate, obj: e.data } })
+				res.send({ result: false, errid: e.name, data: { url, bitrate, obj: e.item } })
+				listener.send('alreadyInQueue', e.item)
 				break
 			case 'NotLoggedIn':
 				res.send({ result: false, errid: e.name, data: { url, bitrate } })
+				listener.send('loginNeededToDownload')
 				break
 			default:
 				console.error(e)
+				res.send({ result: false, errid: e.name, data: { url, bitrate } })
 				break
 		}
 		return
