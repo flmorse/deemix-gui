@@ -4,10 +4,12 @@ import { sep } from 'path'
 import deemix from 'deemix'
 import WebSocket from 'ws'
 import { wss } from './app'
+import { Settings } from './types'
+import { AlreadyInQueue, NotLoggedIn } from './helpers/errors'
 
 const Downloader = deemix.downloader.Downloader
 const { Single, Collection, Convertable } = deemix.types.downloadObjects
-export const defaultSettings: any = deemix.settings.DEFAULTS
+export const defaultSettings: Settings = deemix.settings.DEFAULTS
 export const configFolder: string = deemix.utils.localpaths.getConfigFolder()
 export let settings: any = deemix.settings.load(configFolder)
 export const sessionDZ: any = {}
@@ -38,6 +40,7 @@ export async function addToQueue(dz: any, url: string, bitrate: number) {
 	if (!dz.logged_in) throw new NotLoggedIn()
 	console.log(`Adding ${url} to queue`)
 	let downloadObjs = await deemix.generateDownloadObject(dz, url, bitrate, deemixPlugins, listener)
+	console.log({ downloadObjs })
 	const isSingleObject = !Array.isArray(downloadObjs)
 	console.log(downloadObjs)
 
@@ -93,29 +96,4 @@ async function startQueue(dz: any): Promise<any> {
 		await currentJob.start()
 		currentJob = null
 	} while (queueOrder.length)
-}
-
-class QueueError extends Error {
-	constructor(message: string) {
-		super(message)
-		this.name = 'QueueError'
-	}
-}
-
-class AlreadyInQueue extends QueueError {
-	item: any
-	silent: boolean
-	constructor(dwObj: any, silent: boolean) {
-		super(`${dwObj.artist} - ${dwObj.title} is already in queue.`)
-		this.name = 'AlreadyInQueue'
-		this.item = dwObj
-		this.silent = silent
-	}
-}
-
-class NotLoggedIn extends QueueError {
-	constructor() {
-		super(`You must be logged in to start a download.`)
-		this.name = 'NotLoggedIn'
-	}
 }
