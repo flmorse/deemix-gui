@@ -50,7 +50,7 @@ export async function addToQueue(dz: any, url: string, bitrate: number) {
 
 	downloadObjs.forEach((downloadObj: any) => {
 		// Check if element is already in queue
-		if (queueOrder.includes(downloadObj.uuid)) throw new AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject)
+		if (Object.keys(queue).includes(downloadObj.uuid)) throw new AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject)
 
 		// Save queue status when adding something to the queue
 		if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')
