@@ -84,6 +84,8 @@ async function startQueue(dz: any): Promise<any> {
 		currentJob = true // lock currentJob
 
 		const currentUUID: string = queueOrder.shift() || ""
+		console.log(currentUUID)
+		queue[currentUUID].status = "downloading"
 		const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${currentUUID}.json`).toString())
 		let downloadObject: any
 		switch (currentItem.__type__) {
@@ -100,27 +102,64 @@ async function startQueue(dz: any): Promise<any> {
 		}
 		currentJob = new Downloader(dz, downloadObject, settings, listener)
 		listener.send('startDownload', currentUUID)
-		queue[currentUUID].status = "downloading"
 		await currentJob.start()
 
-		// Set status
-		if (downloadObject.failed == downloadObject.size){
-			queue[currentUUID].status = "failed"
-		} else if(downloadObject.failed > 0){
-			queue[currentUUID].status = "withErrors"
-		} else {
-			queue[currentUUID].status = "completed"
+		if (! downloadObject.isCanceled){
+			// Set status
+			if (downloadObject.failed == downloadObject.size){
+				queue[currentUUID].status = "failed"
+			} else if(downloadObject.failed > 0){
+				queue[currentUUID].status = "withErrors"
+			} else {
+				queue[currentUUID].status = "completed"
+			}
+
+			let savedObject = downloadObject.getSlimmedDict()
+			savedObject.status = queue[currentUUID].status
+
+			// Save queue status
+			fs.writeFileSync(configFolder + `queue${sep}${currentUUID}.json`, JSON.stringify(savedObject))
 		}
-
-		let savedObject = downloadObject.getSlimmedDict()
-		savedObject.status = queue[currentUUID].status
-
-		// Save queue status
-		fs.writeFileSync(configFolder + `queue${sep}${currentUUID}.json`, JSON.stringify(savedObject))
+		console.log(queueOrder)
 		fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
 
 		currentJob = null
 	} while (queueOrder.length)
+}
+
+export function cancelDownload(uuid: string){
+	if (Object.keys(queue).includes(uuid)){
+		switch (queue[uuid].status) {
+			case "downloading":
+				currentJob.downloadObject.isCanceled = true
+				listener.send("cancellingCurrentItem", uuid)
+				break
+			case "inQueue":
+				queueOrder.splice(queueOrder.indexOf(uuid), 1)
+				fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
+			default:
+				listener.send("removedFromQueue", uuid)
+				break
+		}
+		fs.unlinkSync(configFolder + `queue${sep}${uuid}.json`)
+		delete queue[uuid]
+	}
+}
+
+export function cancelAllDownloads(){
+	queueOrder = []
+	let currentItem: string | null = null
+	Object.values(queue).forEach((downloadObject: any) => {
+		if (downloadObject.status == "downloading"){
+			currentJob.downloadObject.isCanceled = true
+			listener.send("cancellingCurrentItem", downloadObject.uuid)
+			currentItem = downloadObject.uuid
+		}
+		fs.unlinkSync(configFolder + `queue${sep}${downloadObject.uuid}.json`)
+		delete queue[downloadObject.uuid]
+	})
+	fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
+	listener.send("removedAllDownloads", currentItem)
 }
 
 export function clearCompletedDownloads(){

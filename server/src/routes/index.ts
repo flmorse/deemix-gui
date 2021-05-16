@@ -1,7 +1,7 @@
 import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { sessionDZ } from '../main'
+import { sessionDZ, queue, queueOrder, currentJob } from '../main'
 
 const router = express.Router()
 
@@ -18,7 +18,7 @@ router.get('/connect', (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 
-	res.send({
+	let result: any = {
 		update: {
 			currentCommit: 'testing',
 			latestCommit: 'testing',
@@ -28,7 +28,19 @@ router.get('/connect', (req, res) => {
 		autologin: !dz.logged_in,
 		currentUser: dz.current_user,
 		deezerNotAvailable: false
-	})
+	}
+
+	if (Object.keys(queue).length > 0){
+		result.queue = {
+			queue,
+			queueOrder
+		}
+		if (currentJob && currentJob !== true){
+			result.queue.current = currentJob.downloadObject.uuid
+		}
+	}
+
+	res.send(result)
 })
 
 export default router
