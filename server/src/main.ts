@@ -33,7 +33,7 @@ export function saveSettings(newSettings: any) {
 }
 
 export let queueOrder: string[] = []
-export let queue: any = {}
+export const queue: any = {}
 export let currentJob: any = null
 
 restoreQueueFromDisk()
@@ -52,7 +52,8 @@ export async function addToQueue(dz: any, url: string, bitrate: number) {
 
 	downloadObjs.forEach((downloadObj: any) => {
 		// Check if element is already in queue
-		if (Object.keys(queue).includes(downloadObj.uuid)) throw new AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject)
+		if (Object.keys(queue).includes(downloadObj.uuid))
+			throw new AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject)
 
 		// Save queue status when adding something to the queue
 		if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')
@@ -60,10 +61,10 @@ export async function addToQueue(dz: any, url: string, bitrate: number) {
 		queueOrder.push(downloadObj.uuid)
 		fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
 		queue[downloadObj.uuid] = downloadObj.getEssentialDict()
-		queue[downloadObj.uuid].status = "inQueue"
+		queue[downloadObj.uuid].status = 'inQueue'
 
-		let savedObject = downloadObj.toDict()
-		savedObject.status = "inQueue"
+		const savedObject = downloadObj.toDict()
+		savedObject.status = 'inQueue'
 		fs.writeFileSync(configFolder + `queue${sep}${downloadObj.uuid}.json`, JSON.stringify(savedObject))
 
 		slimmedObjects.push(downloadObj.getSlimmedDict())
@@ -83,9 +84,9 @@ async function startQueue(dz: any): Promise<any> {
 		}
 		currentJob = true // lock currentJob
 
-		const currentUUID: string = queueOrder.shift() || ""
+		const currentUUID: string = queueOrder.shift() || ''
 		console.log(currentUUID)
-		queue[currentUUID].status = "downloading"
+		queue[currentUUID].status = 'downloading'
 		const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${currentUUID}.json`).toString())
 		let downloadObject: any
 		switch (currentItem.__type__) {
@@ -104,17 +105,17 @@ async function startQueue(dz: any): Promise<any> {
 		listener.send('startDownload', currentUUID)
 		await currentJob.start()
 
-		if (! downloadObject.isCanceled){
+		if (!downloadObject.isCanceled) {
 			// Set status
-			if (downloadObject.failed == downloadObject.size){
-				queue[currentUUID].status = "failed"
-			} else if(downloadObject.failed > 0){
-				queue[currentUUID].status = "withErrors"
+			if (downloadObject.failed == downloadObject.size) {
+				queue[currentUUID].status = 'failed'
+			} else if (downloadObject.failed > 0) {
+				queue[currentUUID].status = 'withErrors'
 			} else {
-				queue[currentUUID].status = "completed"
+				queue[currentUUID].status = 'completed'
 			}
 
-			let savedObject = downloadObject.getSlimmedDict()
+			const savedObject = downloadObject.getSlimmedDict()
 			savedObject.status = queue[currentUUID].status
 
 			// Save queue status
@@ -127,18 +128,20 @@ async function startQueue(dz: any): Promise<any> {
 	} while (queueOrder.length)
 }
 
-export function cancelDownload(uuid: string){
-	if (Object.keys(queue).includes(uuid)){
+export function cancelDownload(uuid: string) {
+	if (Object.keys(queue).includes(uuid)) {
 		switch (queue[uuid].status) {
-			case "downloading":
+			case 'downloading':
 				currentJob.downloadObject.isCanceled = true
-				listener.send("cancellingCurrentItem", uuid)
+				listener.send('cancellingCurrentItem', uuid)
 				break
-			case "inQueue":
+			case 'inQueue':
 				queueOrder.splice(queueOrder.indexOf(uuid), 1)
 				fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
+			// break
 			default:
-				listener.send("removedFromQueue", uuid)
+				// This gets called even in the 'inQueue' case. Is this the expected behaviour? If no, de-comment the break
+				listener.send('removedFromQueue', uuid)
 				break
 		}
 		fs.unlinkSync(configFolder + `queue${sep}${uuid}.json`)
@@ -146,41 +149,41 @@ export function cancelDownload(uuid: string){
 	}
 }
 
-export function cancelAllDownloads(){
+export function cancelAllDownloads() {
 	queueOrder = []
 	let currentItem: string | null = null
 	Object.values(queue).forEach((downloadObject: any) => {
-		if (downloadObject.status == "downloading"){
+		if (downloadObject.status == 'downloading') {
 			currentJob.downloadObject.isCanceled = true
-			listener.send("cancellingCurrentItem", downloadObject.uuid)
+			listener.send('cancellingCurrentItem', downloadObject.uuid)
 			currentItem = downloadObject.uuid
 		}
 		fs.unlinkSync(configFolder + `queue${sep}${downloadObject.uuid}.json`)
 		delete queue[downloadObject.uuid]
 	})
 	fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
-	listener.send("removedAllDownloads", currentItem)
+	listener.send('removedAllDownloads', currentItem)
 }
 
-export function clearCompletedDownloads(){
+export function clearCompletedDownloads() {
 	Object.values(queue).forEach((downloadObject: any) => {
-		if (downloadObject.status === "completed"){
+		if (downloadObject.status === 'completed') {
 			fs.unlinkSync(configFolder + `queue${sep}${downloadObject.uuid}.json`)
 			delete queue[downloadObject.uuid]
 		}
 	})
-	listener.send("removedFinishedDownloads")
+	listener.send('removedFinishedDownloads')
 }
 
-export function restoreQueueFromDisk(){
+export function restoreQueueFromDisk() {
 	if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')
 	const allItems: string[] = fs.readdirSync(configFolder + 'queue')
 	allItems.forEach((filename: string) => {
-		if (filename == 'order.json'){
+		if (filename == 'order.json') {
 			queueOrder = JSON.parse(fs.readFileSync(configFolder + `queue${sep}order.json`).toString())
 		} else {
 			const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${filename}`).toString())
-			if (currentItem.status === 'inQueue'){
+			if (currentItem.status === 'inQueue') {
 				let downloadObject: any
 				switch (currentItem.__type__) {
 					case 'Single':
@@ -194,7 +197,7 @@ export function restoreQueueFromDisk(){
 						break
 				}
 				queue[downloadObject.uuid] = downloadObject.getEssentialDict()
-				queue[downloadObject.uuid].status = "inQueue"
+				queue[downloadObject.uuid].status = 'inQueue'
 			} else {
 				queue[currentItem.uuid] = currentItem
 			}

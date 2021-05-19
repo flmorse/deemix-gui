@@ -18,7 +18,7 @@ router.get('/connect', (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 
-	let result: any = {
+	const result: any = {
 		update: {
 			currentCommit: 'testing',
 			latestCommit: 'testing',
@@ -30,12 +30,12 @@ router.get('/connect', (req, res) => {
 		deezerNotAvailable: false
 	}
 
-	if (Object.keys(queue).length > 0){
+	if (Object.keys(queue).length > 0) {
 		result.queue = {
 			queue,
 			queueOrder
 		}
-		if (currentJob && currentJob !== true){
+		if (currentJob && currentJob !== true) {
 			result.queue.current = currentJob.downloadObject.uuid
 		}
 	}

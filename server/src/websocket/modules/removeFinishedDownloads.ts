@@ -5,7 +5,7 @@ import { clearCompletedDownloads } from '../../main'
 const eventName = 'removeFinishedDownloads'
 
 const cb = (_: any, __: any, ___: WsServer) => {
-  clearCompletedDownloads()
+	clearCompletedDownloads()
 	consoleInfo('Completed downloads cleared')
 }
 

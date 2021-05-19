@@ -5,7 +5,7 @@ import { cancelAllDownloads } from '../../main'
 const eventName = 'cancelAllDownloads'
 
 const cb = (_: any, __: any, ___: WsServer) => {
-  cancelAllDownloads()
+	cancelAllDownloads()
 	consoleInfo(`Queue cleared`)
 }
 
