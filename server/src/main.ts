@@ -94,7 +94,7 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	return slimmedObjects
 }
 
-async function startQueue(dz: any): Promise<any> {
+export async function startQueue(dz: any): Promise<any> {
 	do {
 		if (currentJob !== null || queueOrder.length === 0) {
 			// Should not start another download
