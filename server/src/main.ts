@@ -137,6 +137,7 @@ async function startQueue(dz: any): Promise<any> {
 			savedObject.status = queue[currentUUID].status
 
 			// Save queue status
+			queue[currentUUID] = savedObject
 			fs.writeFileSync(configFolder + `queue${sep}${currentUUID}.json`, JSON.stringify(savedObject))
 		}
 		console.log(queueOrder)

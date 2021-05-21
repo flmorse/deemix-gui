@@ -7,12 +7,11 @@ const path: ApiHandler['path'] = '/getQueue'
 // let homeCache: any
 
 const handler: ApiHandler['handler'] = (_, res) => {
-	const result = {
+	const result:any = {
 		queue,
-		order: queueOrder,
-		currentItem: ''
+		order: queueOrder
 	}
-	if (currentJob) result.currentItem = currentJob.downloadObject.uuid
+	if (currentJob) result.currentItem = currentJob.downloadObject.getSlimmedDict()
 
 	res.send(result)
 }

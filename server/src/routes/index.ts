@@ -36,7 +36,7 @@ router.get('/connect', (req, res) => {
 			queueOrder
 		}
 		if (currentJob && currentJob !== true) {
-			result.queue.current = currentJob.downloadObject.uuid
+			result.queue.current = currentJob.downloadObject.getSlimmedDict()
 		}
 	}
 
