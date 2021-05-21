@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { sep } from 'path'
+import { v4 as uuidv4 } from 'uuid'
 // @ts-expect-error
 import deemix from 'deemix'
 import WebSocket from 'ws'
@@ -38,16 +39,33 @@ export let currentJob: any = null
 
 restoreQueueFromDisk()
 
-export async function addToQueue(dz: any, url: string, bitrate: number) {
+export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	if (!dz.logged_in) throw new NotLoggedIn()
-	console.log(`Adding ${url} to queue`)
-	let downloadObjs = await deemix.generateDownloadObject(dz, url, bitrate, deemixPlugins, listener)
-	console.log({ downloadObjs })
-	const isSingleObject = !Array.isArray(downloadObjs)
-	console.log(downloadObjs)
 
-	if (isSingleObject) downloadObjs = [downloadObjs]
+	let downloadObjs: any[] = []
+	let link: string = ""
+	const requestUUID = uuidv4()
 
+	if (url.length > 1){
+		listener.send("startGeneratingItems", {uuid: requestUUID, total: url.length})
+	}
+
+	for (let i = 0; i < url.length; i++){
+		link = url[i]
+		console.log(`Adding ${link} to queue`)
+		let downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, deemixPlugins, listener)
+		if (Array.isArray(downloadObj)){
+			downloadObjs.concat(downloadObj)
+		} else {
+			downloadObjs.push(downloadObj)
+		}
+	}
+
+	if (url.length > 1){
+		listener.send("finishGeneratingItems", {uuid: requestUUID, total: downloadObjs.length})
+	}
+
+	const isSingleObject = downloadObjs.length == 1
 	const slimmedObjects: any[] = []
 
 	downloadObjs.forEach((downloadObj: any) => {
