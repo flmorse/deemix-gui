@@ -15,6 +15,9 @@ export const configFolder: string = deemix.utils.localpaths.getConfigFolder()
 export let settings: any = deemix.settings.load(configFolder)
 export const sessionDZ: any = {}
 
+export const getAccessToken = deemix.utils.deezer.getAccessToken
+export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
+
 const deemixPlugins = {}
 
 export const listener = {
