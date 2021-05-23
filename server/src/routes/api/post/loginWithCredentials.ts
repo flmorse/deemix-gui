@@ -13,8 +13,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	}
 	let arl
 	if (accessToken) arl = getArlFromAccessToken(accessToken)
-
-	console.log({ username, password })
+	
 	res.send({ accessToken, arl })
 }
 
