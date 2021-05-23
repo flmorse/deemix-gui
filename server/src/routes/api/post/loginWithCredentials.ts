@@ -6,7 +6,7 @@ const handler: ApiHandler['handler'] = (req, res) => {
 	const { username, password } = req.body
 
 	console.log({ username, password })
-	res.send(null)
+	res.send({ loggedIn: true })
 }
 
 const apiHandler = { path, handler }
