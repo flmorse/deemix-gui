@@ -3,15 +3,16 @@ import { getAccessToken, getArlFromAccessToken } from '../../../main'
 
 const path = '/loginWithCredentials'
 
-const handler: ApiHandler['handler'] = (req, res) => {
+const handler: ApiHandler['handler'] = async (req, res) => {
 	const { username, password } = req.body
 	let accessToken = req.body.accessToken
 
 	if (!accessToken){
-		const accessToken = getAccessToken(username, password)
+		const accessToken = await getAccessToken(username, password)
 		console.log({ accessToken })
 	}
-	const arl = getArlFromAccessToken(accessToken)
+	let arl
+	if (accessToken) arl = getArlFromAccessToken(accessToken)
 
 	console.log({ username, password })
 	res.send({ accessToken, arl })
