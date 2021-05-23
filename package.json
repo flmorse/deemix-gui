@@ -1,0 +1,17 @@
+{
+  "name": "deemix-gui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://gitlab.com/RemixDev/deemix-gui.git",
+  "author": "RemixDev <RemixDev64@gmail.com>",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "start": "electron . --dev",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^12.0.9",
+    "electron-builder": "^22.10.5"
+  }
+}
