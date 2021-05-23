@@ -30,9 +30,13 @@ const methods = [
 function registerApis(app) {
     methods.forEach(({ method, endpoints }) => {
         endpoints.forEach(endpoint => {
-            // @ts-ignore
+            // @ts-expect-error
             app[method](prependApiPath(endpoint.path), endpoint.handler);
         });
+    });
+    // Fallback, for SPA mode
+    app.get('*', (_, res) => {
+        res.redirect('/');
     });
 }
 exports.registerApis = registerApis;
