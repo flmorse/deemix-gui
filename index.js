@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, shell} = require('electron')
+const { app, BrowserWindow, globalShortcut, ipcMain, shell, dialog} = require('electron')
 const path = require('path')
 
 const PORT = process.env.PORT || '6595'
@@ -7,9 +7,11 @@ function isDev() {
   return process.argv[2] == '--dev';
 }
 
+let win
+
 function createWindow () {
   require('./server/dist/app.js')
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     useContentSize: true,
@@ -54,4 +56,17 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+ipcMain.on('openDownloadsFolder', (event)=>{
+  const { downloadLocation } = require('./server/dist/main.js').settings
+  shell.openPath(downloadLocation)
+})
+
+ipcMain.on('selectDownloadFolder', async (event, downloadLocation)=>{
+  let path = await dialog.showOpenDialog(win, {
+    defaultPath: downloadLocation,
+    properties: ["openDirectory", "createDirectory"]
+  })
+  if (path.filePaths[0]) win.webContents.send("downloadFolderSelected", path.filePaths[0])
 })
