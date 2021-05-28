@@ -1,0 +1,15 @@
+// @ts-expect-error
+import { Deezer } from 'deezer-js'
+import { ApiHandler } from '../../../types'
+import { sessionDZ } from '../../../main'
+
+const path: ApiHandler['path'] = '/logout'
+
+const handler: ApiHandler['handler'] = async (req, res) => {
+	sessionDZ[req.session.id] = new Deezer()
+	res.send({ logged_out: true })
+}
+
+const apiHandler: ApiHandler = { path, handler }
+
+export default apiHandler

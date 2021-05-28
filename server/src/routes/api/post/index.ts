@@ -4,6 +4,7 @@ import loginWithCredentials from './loginWithCredentials'
 import cancelAllDownloads from './cancelAllDownloads'
 import removeFinishedDownloads from './removeFinishedDownloads'
 import removeFromQueue from './removeFromQueue'
+import logout from './logout'
 
 export default [
   loginArl,
@@ -11,5 +12,6 @@ export default [
   loginWithCredentials,
   cancelAllDownloads,
   removeFinishedDownloads,
-  removeFromQueue
+  removeFromQueue,
+  logout
 ]
