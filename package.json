@@ -7,15 +7,52 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "start": "electron . --dev",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "prebuild": "yarn --cwd ./server build && yarn --cwd ./webui build",
+    "dist": "electron-builder",
+    "dist:dir": "electron-builder --dir"
   },
   "devDependencies": {
     "electron": "^12.0.9",
-    "electron-builder": "^22.10.5"
+    "electron-builder": "22.11.4"
   },
   "dependencies": {
     "electron-context-menu": "^3.1.0",
-    "electron-window-state-manager": "^0.3.2"
+    "electron-window-state-manager": "^0.3.2",
+
+    "cookie-parser": "1.4.5",
+    "debug": "2.6.9",
+    "deemix": "^0.0.11",
+    "deezer-js": "^0.0.10",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "express-session": "^1.17.1",
+    "morgan": "1.10.0",
+    "ramda": "0.27.1",
+    "uuid": "8.3.2",
+    "ws": "7.4.5"
+  },
+  "build": {
+    "appId": "app.deemix.gui",
+    "productName": "deemix-gui",
+    "files": [
+      "index.js",
+      "preload.js",
+      "server/dist/**/*",
+      "webui/public/**/*",
+      "build/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.music"
+    },
+    "win": {
+      "target": "portable"
+    },
+    "linux": {
+      "target": "appimage",
+      "artifactName": "deemix-gui_${os}.${ext}",
+      "category": "AudioVideo,Audio",
+      "icon": "build/icon.icns"
+    }
   }
 }

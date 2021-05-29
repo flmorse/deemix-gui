@@ -2,6 +2,7 @@ const { app, BrowserWindow, globalShortcut, ipcMain, shell, dialog, Menu} = requ
 const contextMenu = require('electron-context-menu')
 const WindowStateManager = require('electron-window-state-manager')
 const path = require('path')
+const os = require('os')
 
 const PORT = process.env.PORT || '6595'
 
@@ -24,6 +25,7 @@ function createWindow () {
     y: windowState.y,
     useContentSize: true,
     autoHideMenuBar: true,
+    icon: path.join(__dirname, os.platform() === 'win32' ? 'build/icon.ico' : 'build/64x64.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
