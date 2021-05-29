@@ -68,6 +68,7 @@
     "nsis": {
       "artifactName": "${productName}_setup.${ext}",
       "oneClick": false,
+      "license": "LICENSE",
       "allowToChangeInstallationDirectory": true,
       "uninstallDisplayName": "${productName}",
       "deleteAppDataOnUninstall": true
