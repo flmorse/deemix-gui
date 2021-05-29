@@ -46,13 +46,33 @@
       "category": "public.app-category.music"
     },
     "win": {
-      "target": "portable"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": "x64"
+        },
+        {
+          "target": "portable",
+          "arch": "x64"
+        }
+      ]
     },
     "linux": {
       "target": "appimage",
       "artifactName": "deemix-gui_${os}.${ext}",
       "category": "AudioVideo,Audio",
       "icon": "build/icon.icns"
+    },
+    "nsis": {
+      "artifactName": "${productName}_setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "uninstallDisplayName": "${productName}",
+      "deleteAppDataOnUninstall": true
+    },
+    "portable": {
+      "artifactName": "${productName}.${ext}",
+      "requestExecutionLevel": "user"
     }
   }
 }
