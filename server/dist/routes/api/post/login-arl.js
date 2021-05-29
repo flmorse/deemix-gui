@@ -19,7 +19,7 @@ const LoginStatus = {
     ALREADY_LOGGED: 2,
     FORCED_SUCCESS: 3
 };
-const path = '/login-arl/';
+const path = '/login-arl';
 const handler = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!main_1.sessionDZ[req.session.id])
         main_1.sessionDZ[req.session.id] = new deezer_js_1.Deezer();

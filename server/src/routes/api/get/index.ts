@@ -10,6 +10,7 @@ import getUserTracks from './getUserTracks'
 import getUserAlbums from './getUserAlbums'
 import getUserArtists from './getUserArtists'
 import getUserPlaylists from './getUserPlaylists'
+import getUserSpotifyPlaylists from './getUserSpotifyPlaylists'
 import getUserFavorites from './getUserFavorites'
 import getQueue from './getQueue'
 
@@ -26,6 +27,7 @@ export default [
 	getUserAlbums,
 	getUserArtists,
 	getUserPlaylists,
+	getUserSpotifyPlaylists,
 	getUserFavorites,
 	getQueue
 ]

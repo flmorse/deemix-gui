@@ -26,6 +26,48 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.send(artistAPI);
             break;
         }
+        case 'spotifyplaylist':
+        case 'spotify_playlist': {
+            if (!main_1.plugins.spotify.enabled) {
+                res.send({
+                    collaborative: false,
+                    description: "",
+                    external_urls: { spotify: null },
+                    followers: { total: 0, href: null },
+                    id: null,
+                    images: [],
+                    name: "Something went wrong",
+                    owner: {
+                        display_name: "Error",
+                        id: null
+                    },
+                    public: true,
+                    tracks: [],
+                    type: 'playlist',
+                    uri: null
+                });
+                break;
+            }
+            let sp = main_1.plugins.spotify.sp;
+            let playlist = yield sp.getPlaylist(list_id);
+            playlist = playlist.body;
+            let tracklist = playlist.tracks.items;
+            while (playlist.tracks.next) {
+                let regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next);
+                let offset = regExec[1];
+                let limit = regExec[2];
+                let playlistTracks = yield sp.getPlaylistTracks(list_id, { offset, limit });
+                playlist.tracks = playlistTracks.body;
+                tracklist = tracklist.concat(playlist.tracks.items);
+            }
+            tracklist.forEach((item, i) => {
+                tracklist[i] = item.track;
+                tracklist[i].selected = false;
+            });
+            playlist.tracks = tracklist;
+            res.send(playlist);
+            break;
+        }
         default: {
             const releaseAPI = yield dz.api[`get_${list_type}`](list_id);
             let releaseTracksAPI = yield dz.api[`get_${list_type}_tracks`](list_id);

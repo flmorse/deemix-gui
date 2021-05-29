@@ -12,7 +12,7 @@ export interface SaveSettingsData {
 
 const cb = (data: SaveSettingsData, _: any, __: WsServer) => {
 	const { settings, spotifySettings } = data
-	saveSettings(settings)
+	saveSettings(settings, spotifySettings)
 	consoleInfo('Settings saved')
 	listener.send('updateSettings', { settings, spotifySettings })
 }

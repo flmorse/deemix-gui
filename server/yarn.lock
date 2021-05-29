@@ -1883,10 +1883,10 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.0.7.tgz#64ac4caa435d8dd373469c219e2557350afd4a03"
-  integrity sha512-iCi4MCnMoh2PSGvUteS8XISx62i/Y4qoE2plEm083z3tGEqU9VhEW6clUnHwpAyfCeCamRdbAzMUq9V4RxaVoA==
+deemix@0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.0.10.tgz#630244c7b454b684337a807437b14a20a605e0ff"
+  integrity sha512-dNGoJY3h8naxhtTNLH7d93wCTnk7yln6oMeseTcUOiizJvT0CfX8g2xN1BAnozlk0wzs948b6VOeCPbeOAhglA==
   dependencies:
     async "^3.2.0"
     browser-id3-writer "^4.4.0"
@@ -1894,6 +1894,7 @@ deemix@0.0.7:
     deezer-js "^0.0.8"
     got "^11.8.2"
     metaflac-js2 "^1.0.7"
+    spotify-web-api-node "^5.0.2"
 
 deep-extend@^0.6.0:
   version "0.6.0"
@@ -5575,6 +5576,13 @@ split-string@^3.0.1, split-string@^3.0.2:
   integrity sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==
   dependencies:
     extend-shallow "^3.0.0"
+
+spotify-web-api-node@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/spotify-web-api-node/-/spotify-web-api-node-5.0.2.tgz#683669b3ccc046a5a357300f151df93a2b3539fe"
+  integrity sha512-r82dRWU9PMimHvHEzL0DwEJrzFk+SMCVfq249SLt3I7EFez7R+jeoKQd+M1//QcnjqlXPs2am4DFsGk8/GCsrA==
+  dependencies:
+    superagent "^6.1.0"
 
 sprintf-js@~1.0.2:
   version "1.0.3"

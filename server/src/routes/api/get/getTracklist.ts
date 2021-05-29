@@ -1,7 +1,7 @@
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
-import { sessionDZ } from '../../../main'
+import { sessionDZ, plugins } from '../../../main'
 
 const path: ApiHandler['path'] = '/getTracklist'
 
@@ -16,6 +16,48 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 			const artistAPI = await dz.api.get_artist(list_id)
 			artistAPI.releases = await dz.gw.get_artist_discography_tabs(list_id, { limit: 100 })
 			res.send(artistAPI)
+			break
+		}
+		case 'spotifyplaylist':
+		case 'spotify_playlist': {
+			if (!plugins.spotify.enabled){
+				res.send({
+					collaborative: false,
+					description: "",
+					external_urls: {spotify: null},
+					followers: {total: 0, href: null},
+					id: null,
+					images: [],
+					name: "Something went wrong",
+					owner: {
+						display_name: "Error",
+						id: null
+					},
+					public: true,
+					tracks : [],
+					type: 'playlist',
+					uri: null
+				})
+				break
+			}
+			let sp = plugins.spotify.sp
+			let playlist = await sp.getPlaylist(list_id)
+			playlist = playlist.body
+			let tracklist = playlist.tracks.items
+			while (playlist.tracks.next) {
+	      let regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next)
+				let offset = regExec![1]
+	      let limit = regExec![2]
+	      let playlistTracks = await sp.getPlaylistTracks(list_id, { offset, limit })
+	      playlist.tracks = playlistTracks.body
+	      tracklist = tracklist.concat(playlist.tracks.items)
+	    }
+			tracklist.forEach((item:any, i:number) => {
+				tracklist[i] = item.track
+				tracklist[i].selected = false
+			});
+			playlist.tracks = tracklist
+			res.send(playlist)
 			break
 		}
 		default: {

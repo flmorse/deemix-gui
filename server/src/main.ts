@@ -18,7 +18,10 @@ export const sessionDZ: any = {}
 export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
 
-const deemixPlugins = {}
+export const plugins: any = {
+	spotify: new deemix.plugins.spotify()
+}
+plugins.spotify.setup()
 
 export const listener = {
 	send(key: string, data?: any) {
@@ -31,9 +34,14 @@ export const listener = {
 	}
 }
 
-export function saveSettings(newSettings: any) {
+export function getSettings(): any {
+	return {settings, defaultSettings, spotifySettings: plugins.spotify.getCredentials()}
+}
+
+export function saveSettings(newSettings: any, newSpotifySettings: any) {
 	deemix.settings.save(newSettings, configFolder)
 	settings = newSettings
+	plugins.spotify.setCredentials(newSpotifySettings)
 }
 
 export let queueOrder: string[] = []
@@ -56,7 +64,7 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	for (let i = 0; i < url.length; i++){
 		link = url[i]
 		console.log(`Adding ${link} to queue`)
-		let downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, deemixPlugins, listener)
+		let downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, plugins, listener)
 		if (Array.isArray(downloadObj)){
 			downloadObjs.concat(downloadObj)
 		} else {
@@ -119,7 +127,8 @@ export async function startQueue(dz: any): Promise<any> {
 				break
 			case 'Convertable':
 				downloadObject = new Convertable(currentItem)
-				// Convert object here
+				downloadObject = await plugins[downloadObject.plugin].convert(dz, downloadObject, settings, listener)
+				fs.writeFileSync(configFolder + `queue${sep}${downloadObject.uuid}.json`, JSON.stringify({...downloadObject.toDict(), status: 'inQueue'}))
 				break
 		}
 		currentJob = new Downloader(dz, downloadObject, settings, listener)

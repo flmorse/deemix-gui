@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../../../main");
 const path = '/loginWithCredentials';
 const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     let accessToken = req.body.accessToken;
     if (!accessToken) {
-        const accessToken = yield main_1.getAccessToken(username, password);
-        console.log({ accessToken });
+        accessToken = yield main_1.getAccessToken(email, password);
     }
     let arl;
     if (accessToken)
-        arl = main_1.getArlFromAccessToken(accessToken);
+        arl = yield main_1.getArlFromAccessToken(accessToken);
+    console.log({ accessToken, arl });
     res.send({ accessToken, arl });
 });
 const apiHandler = { path, handler };

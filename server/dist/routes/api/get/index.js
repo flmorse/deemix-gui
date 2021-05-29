@@ -15,6 +15,7 @@ const getUserTracks_1 = __importDefault(require("./getUserTracks"));
 const getUserAlbums_1 = __importDefault(require("./getUserAlbums"));
 const getUserArtists_1 = __importDefault(require("./getUserArtists"));
 const getUserPlaylists_1 = __importDefault(require("./getUserPlaylists"));
+const getUserSpotifyPlaylists_1 = __importDefault(require("./getUserSpotifyPlaylists"));
 const getUserFavorites_1 = __importDefault(require("./getUserFavorites"));
 const getQueue_1 = __importDefault(require("./getQueue"));
 exports.default = [
@@ -30,6 +31,7 @@ exports.default = [
     getUserAlbums_1.default,
     getUserArtists_1.default,
     getUserPlaylists_1.default,
+    getUserSpotifyPlaylists_1.default,
     getUserFavorites_1.default,
     getQueue_1.default
 ];

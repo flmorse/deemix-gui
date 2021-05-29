@@ -5,7 +5,7 @@ const main_1 = require("../../main");
 const eventName = 'saveSettings';
 const cb = (data, _, __) => {
     const { settings, spotifySettings } = data;
-    main_1.saveSettings(settings);
+    main_1.saveSettings(settings, spotifySettings);
     errors_1.consoleInfo('Settings saved');
     main_1.listener.send('updateSettings', { settings, spotifySettings });
 };

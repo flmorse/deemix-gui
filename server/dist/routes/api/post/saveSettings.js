@@ -10,16 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../../../main");
-const path = '/removeFromQueue';
+const path = '/saveSettings';
 const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { uuid } = req.query;
-    if (uuid) {
-        main_1.cancelDownload(uuid);
-        res.send({ result: true });
-    }
-    else {
-        res.send({ result: false });
-    }
+    const { settings, spotifySettings } = req.query;
+    main_1.saveSettings(settings, spotifySettings);
+    main_1.listener.send('updateSettings', { settings, spotifySettings });
+    res.send({ result: true });
 });
 const apiHandler = { path, handler };
 exports.default = apiHandler;

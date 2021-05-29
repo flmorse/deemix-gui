@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restoreQueueFromDisk = exports.clearCompletedDownloads = exports.cancelAllDownloads = exports.cancelDownload = exports.startQueue = exports.addToQueue = exports.currentJob = exports.queue = exports.queueOrder = exports.saveSettings = exports.listener = exports.getArlFromAccessToken = exports.getAccessToken = exports.sessionDZ = exports.settings = exports.configFolder = exports.defaultSettings = void 0;
+exports.restoreQueueFromDisk = exports.clearCompletedDownloads = exports.cancelAllDownloads = exports.cancelDownload = exports.startQueue = exports.addToQueue = exports.currentJob = exports.queue = exports.queueOrder = exports.saveSettings = exports.getSettings = exports.listener = exports.plugins = exports.getArlFromAccessToken = exports.getAccessToken = exports.sessionDZ = exports.settings = exports.configFolder = exports.defaultSettings = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = require("path");
 const uuid_1 = require("uuid");
@@ -29,7 +29,10 @@ exports.settings = deemix_1.default.settings.load(exports.configFolder);
 exports.sessionDZ = {};
 exports.getAccessToken = deemix_1.default.utils.deezer.getAccessToken;
 exports.getArlFromAccessToken = deemix_1.default.utils.deezer.getArlFromAccessToken;
-const deemixPlugins = {};
+exports.plugins = {
+    spotify: new deemix_1.default.plugins.spotify()
+};
+exports.plugins.spotify.setup();
 exports.listener = {
     send(key, data) {
         console.log(key, data);
@@ -40,9 +43,14 @@ exports.listener = {
         });
     }
 };
-function saveSettings(newSettings) {
+function getSettings() {
+    return { settings: exports.settings, defaultSettings: exports.defaultSettings, spotifySettings: exports.plugins.spotify.getCredentials() };
+}
+exports.getSettings = getSettings;
+function saveSettings(newSettings, newSpotifySettings) {
     deemix_1.default.settings.save(newSettings, exports.configFolder);
     exports.settings = newSettings;
+    exports.plugins.spotify.setCredentials(newSpotifySettings);
 }
 exports.saveSettings = saveSettings;
 exports.queueOrder = [];
@@ -62,7 +70,7 @@ function addToQueue(dz, url, bitrate) {
         for (let i = 0; i < url.length; i++) {
             link = url[i];
             console.log(`Adding ${link} to queue`);
-            let downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, deemixPlugins, exports.listener);
+            let downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, exports.plugins, exports.listener);
             if (Array.isArray(downloadObj)) {
                 downloadObjs.concat(downloadObj);
             }
@@ -122,7 +130,8 @@ function startQueue(dz) {
                     break;
                 case 'Convertable':
                     downloadObject = new Convertable(currentItem);
-                    // Convert object here
+                    downloadObject = yield exports.plugins[downloadObject.plugin].convert(dz, downloadObject, exports.settings, exports.listener);
+                    fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}${downloadObject.uuid}.json`, JSON.stringify(Object.assign(Object.assign({}, downloadObject.toDict()), { status: 'inQueue' })));
                     break;
             }
             exports.currentJob = new Downloader(dz, downloadObject, exports.settings, exports.listener);
