@@ -23,29 +23,31 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		switch (topResult.type) {
 			case 'artist':
 				topResult.id = originalTopResult.ART_ID
-				topResult.picture = `https://e-cdns-images.dzcdn.net/images/artist/${originalTopResult.ART_PICTURE}/156x156-000000-80-0-0.jpg`
+				topResult.picture = `https://e-cdns-images.dzcdn.net/images/artist/${originalTopResult.ART_PICTURE}`
 				topResult.title = originalTopResult.ART_NAME
 				topResult.nb_fan = originalTopResult.NB_FAN
 				break
 			case 'album':
 				topResult.id = originalTopResult.ALB_ID
-				topResult.picture = `https://e-cdns-images.dzcdn.net/images/cover/${originalTopResult.ALB_PICTURE}/156x156-000000-80-0-0.jpg`
+				topResult.picture = `https://e-cdns-images.dzcdn.net/images/cover/${originalTopResult.ALB_PICTURE}`
 				topResult.title = originalTopResult.ALB_TITLE
 				topResult.artist = originalTopResult.ART_NAME
 				topResult.nb_song = originalTopResult.NUMBER_TRACK
 				break
 			case 'playlist':
 				topResult.id = originalTopResult.PLAYLIST_ID
-				topResult.picture = `https://e-cdns-images.dzcdn.net/images/${originalTopResult.PICTURE_TYPE}/${originalTopResult.PLAYLIST_PICTURE}/156x156-000000-80-0-0.jpg`
+				topResult.picture = `https://e-cdns-images.dzcdn.net/images/${originalTopResult.PICTURE_TYPE}/${originalTopResult.PLAYLIST_PICTURE}`
 				topResult.title = originalTopResult.TITLE
 				topResult.artist = originalTopResult.PARENT_USERNAME
 				topResult.nb_song = originalTopResult.NB_SONG
 				break
 			default:
 				topResult.id = '0'
-				topResult.picture = 'https://e-cdns-images.dzcdn.net/images/cover/156x156-000000-80-0-0.jpg'
+				topResult.picture = 'https://e-cdns-images.dzcdn.net/images/cover'
 				break
 		}
+		topResult.picture += '/156x156-000000-80-0-0.jpg'
+		topResult.link = `https://deezer.com/${topResult.type}/${topResult.id}`
 		results.TOP_RESULT = [topResult]
 	}
 	results.ORDER = order
