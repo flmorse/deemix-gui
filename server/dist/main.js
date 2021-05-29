@@ -81,12 +81,12 @@ function addToQueue(dz, url, bitrate) {
         if (url.length > 1) {
             exports.listener.send("finishGeneratingItems", { uuid: requestUUID, total: downloadObjs.length });
         }
-        const isSingleObject = downloadObjs.length == 1;
         const slimmedObjects = [];
-        downloadObjs.forEach((downloadObj) => {
+        downloadObjs.forEach((downloadObj, pos) => {
             // Check if element is already in queue
             if (Object.keys(exports.queue).includes(downloadObj.uuid)) {
                 exports.listener.send('alreadyInQueue', downloadObj.getEssentialDict());
+                delete downloadObjs[pos];
                 return;
             }
             // Save queue status when adding something to the queue
@@ -101,6 +101,7 @@ function addToQueue(dz, url, bitrate) {
             fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}${downloadObj.uuid}.json`, JSON.stringify(savedObject));
             slimmedObjects.push(downloadObj.getSlimmedDict());
         });
+        const isSingleObject = downloadObjs.length == 1;
         if (isSingleObject)
             exports.listener.send('addedToQueue', downloadObjs[0].getSlimmedDict());
         else

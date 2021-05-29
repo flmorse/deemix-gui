@@ -76,16 +76,15 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 		listener.send("finishGeneratingItems", {uuid: requestUUID, total: downloadObjs.length})
 	}
 
-	const isSingleObject = downloadObjs.length == 1
 	const slimmedObjects: any[] = []
 
-	downloadObjs.forEach((downloadObj: any) => {
+	downloadObjs.forEach((downloadObj: any, pos: number) => {
 		// Check if element is already in queue
 		if (Object.keys(queue).includes(downloadObj.uuid)){
 			listener.send('alreadyInQueue', downloadObj.getEssentialDict())
+			delete downloadObjs[pos]
 			return
 		}
-
 
 		// Save queue status when adding something to the queue
 		if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')
@@ -101,6 +100,7 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 
 		slimmedObjects.push(downloadObj.getSlimmedDict())
 	})
+	const isSingleObject = downloadObjs.length == 1
 	if (isSingleObject) listener.send('addedToQueue', downloadObjs[0].getSlimmedDict())
 	else listener.send('addedToQueue', slimmedObjects)
 
