@@ -813,10 +813,10 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.0.11.tgz#99b6fd4b2ea365e5f2ba248e1312448d227d2cf6"
-  integrity sha512-TiMl29DRNlw0Uqwg3Y27p8Qa0S1eEcXg0BOusN7DuHnkH2jK1OaWzFQmd+P1owuRUljH+t2M9MlTss3tN3LHEA==
+deemix@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.1.0.tgz#c66424e55a7a903639dc396ecfc636c55fc6a614"
+  integrity sha512-z9UC3ShZvTNTj1BmcJTVNxRRdjmZgMzYmrdhT0934dVRefuArcJQRLOcudu8jnYHjTJw2ONnWEIrRGM+3/C/9A==
   dependencies:
     async "^3.2.0"
     browser-id3-writer "^4.4.0"

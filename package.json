@@ -21,7 +21,7 @@
 
     "cookie-parser": "1.4.5",
     "debug": "2.6.9",
-    "deemix": "^0.0.11",
+    "deemix": "^0.1.0",
     "deezer-js": "^0.0.10",
     "dotenv": "8.2.0",
     "express": "4.17.1",
@@ -43,6 +43,8 @@
       "package.json"
     ],
     "mac": {
+      "target": "dmg",
+      "artifactName": "deemix-gui.${ext}",
       "category": "public.app-category.music"
     },
     "win": {
@@ -59,7 +61,7 @@
     },
     "linux": {
       "target": "appimage",
-      "artifactName": "deemix-gui_${os}.${ext}",
+      "artifactName": "deemix-gui.${ext}",
       "category": "AudioVideo,Audio",
       "icon": "build/icon.icns"
     },
