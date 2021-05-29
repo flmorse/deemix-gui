@@ -72,7 +72,7 @@ function addToQueue(dz, url, bitrate) {
             console.log(`Adding ${link} to queue`);
             let downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, exports.plugins, exports.listener);
             if (Array.isArray(downloadObj)) {
-                downloadObjs.concat(downloadObj);
+                downloadObjs = downloadObjs.concat(downloadObj);
             }
             else {
                 downloadObjs.push(downloadObj);
@@ -85,8 +85,10 @@ function addToQueue(dz, url, bitrate) {
         const slimmedObjects = [];
         downloadObjs.forEach((downloadObj) => {
             // Check if element is already in queue
-            if (Object.keys(exports.queue).includes(downloadObj.uuid))
-                throw new errors_1.AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject);
+            if (Object.keys(exports.queue).includes(downloadObj.uuid)) {
+                exports.listener.send('alreadyInQueue', downloadObj.getEssentialDict());
+                return;
+            }
             // Save queue status when adding something to the queue
             if (!fs_1.default.existsSync(exports.configFolder + 'queue'))
                 fs_1.default.mkdirSync(exports.configFolder + 'queue');

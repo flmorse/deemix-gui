@@ -18,10 +18,6 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		obj = await addToQueue(dz, url, bitrate)
 	} catch (e) {
 		switch (e.name) {
-			case 'AlreadyInQueue':
-				res.send({ result: false, errid: e.name, data: { url, bitrate, obj: e.item } })
-				listener.send('alreadyInQueue', e.item)
-				break
 			case 'NotLoggedIn':
 				res.send({ result: false, errid: e.name, data: { url, bitrate } })
 				listener.send('loginNeededToDownload')

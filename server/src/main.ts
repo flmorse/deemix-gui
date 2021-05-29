@@ -66,7 +66,7 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 		console.log(`Adding ${link} to queue`)
 		let downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, plugins, listener)
 		if (Array.isArray(downloadObj)){
-			downloadObjs.concat(downloadObj)
+			downloadObjs = downloadObjs.concat(downloadObj)
 		} else {
 			downloadObjs.push(downloadObj)
 		}
@@ -81,8 +81,11 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 
 	downloadObjs.forEach((downloadObj: any) => {
 		// Check if element is already in queue
-		if (Object.keys(queue).includes(downloadObj.uuid))
-			throw new AlreadyInQueue(downloadObj.getEssentialDict(), !isSingleObject)
+		if (Object.keys(queue).includes(downloadObj.uuid)){
+			listener.send('alreadyInQueue', downloadObj.getEssentialDict())
+			return
+		}
+
 
 		// Save queue status when adding something to the queue
 		if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')

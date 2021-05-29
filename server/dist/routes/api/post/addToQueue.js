@@ -27,10 +27,6 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (e) {
         switch (e.name) {
-            case 'AlreadyInQueue':
-                res.send({ result: false, errid: e.name, data: { url, bitrate, obj: e.item } });
-                main_1.listener.send('alreadyInQueue', e.item);
-                break;
             case 'NotLoggedIn':
                 res.send({ result: false, errid: e.name, data: { url, bitrate } });
                 main_1.listener.send('loginNeededToDownload');
