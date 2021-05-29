@@ -1,4 +1,6 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, shell, dialog} = require('electron')
+const { app, BrowserWindow, globalShortcut, ipcMain, shell, dialog, Menu} = require('electron')
+const contextMenu = require('electron-context-menu')
+const WindowStateManager = require('electron-window-state-manager')
 const path = require('path')
 
 const PORT = process.env.PORT || '6595'
@@ -8,12 +10,18 @@ function isDev() {
 }
 
 let win
+const windowState = new WindowStateManager('mainWindow', {
+  defaultWidth: 800,
+  defaultHeight: 600
+})
 
 function createWindow () {
   require('./server/dist/app.js')
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: windowState.width,
+    height: windowState.height,
+    x: windowState.x,
+    y: windowState.y,
     useContentSize: true,
     autoHideMenuBar: true,
     webPreferences: {
@@ -25,11 +33,11 @@ function createWindow () {
 
   if (isDev()){
     globalShortcut.register('f5', function() {
-  		win.reload()
-  	})
+      win.reload()
+    })
     globalShortcut.register('f12', function() {
-  		win.webContents.openDevTools()
-  	})
+      win.webContents.openDevTools()
+    })
   }
 
   // Open links in external browser
@@ -39,10 +47,23 @@ function createWindow () {
   })
 
   win.loadURL(`http://localhost:${PORT}`)
+
+  if (windowState.maximized) {
+    win.maximize();
+  }
+
+  win.on('close', (event)=>{
+    windowState.saveState(win);
+  })
 }
 
 app.whenReady().then(() => {
   createWindow()
+  contextMenu({
+    showLookUpSelection: false,
+    showSearchWithGoogle: false,
+    showInspectElement: false
+  })
 
   // Only one istance per time
   app.on('activate', () => {
