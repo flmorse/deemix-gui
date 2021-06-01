@@ -7,7 +7,7 @@ const path: ApiHandler['path'] = '/getQueue'
 // let homeCache: any
 
 const handler: ApiHandler['handler'] = (_, res) => {
-	const result:any = {
+	const result: any = {
 		queue,
 		order: queueOrder
 	}

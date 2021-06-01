@@ -8,12 +8,12 @@ import logout from './logout'
 import saveSettings from './saveSettings'
 
 export default [
-  loginArl,
-  addToQueue,
-  loginWithCredentials,
-  cancelAllDownloads,
-  removeFinishedDownloads,
-  removeFromQueue,
-  logout,
-  saveSettings
+	loginArl,
+	addToQueue,
+	loginWithCredentials,
+	cancelAllDownloads,
+	removeFinishedDownloads,
+	removeFromQueue,
+	logout,
+	saveSettings
 ]

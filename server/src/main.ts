@@ -27,7 +27,7 @@ export const listener = {
 	send(key: string, data?: any) {
 		if (data) console.log(key, data)
 		else console.log(key)
-		if (["downloadInfo", "downloadWarn"].includes(key)) return
+		if (['downloadInfo', 'downloadWarn'].includes(key)) return
 		wss.clients.forEach(client => {
 			if (client.readyState === WebSocket.OPEN) {
 				client.send(JSON.stringify({ key, data }))
@@ -37,7 +37,7 @@ export const listener = {
 }
 
 export function getSettings(): any {
-	return {settings, defaultSettings, spotifySettings: plugins.spotify.getCredentials()}
+	return { settings, defaultSettings, spotifySettings: plugins.spotify.getCredentials() }
 }
 
 export function saveSettings(newSettings: any, newSpotifySettings: any) {
@@ -56,33 +56,33 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	if (!dz.logged_in) throw new NotLoggedIn()
 
 	let downloadObjs: any[] = []
-	let link: string = ""
+	let link: string = ''
 	const requestUUID = uuidv4()
 
-	if (url.length > 1){
-		listener.send("startGeneratingItems", {uuid: requestUUID, total: url.length})
+	if (url.length > 1) {
+		listener.send('startGeneratingItems', { uuid: requestUUID, total: url.length })
 	}
 
-	for (let i = 0; i < url.length; i++){
+	for (let i = 0; i < url.length; i++) {
 		link = url[i]
 		console.log(`Adding ${link} to queue`)
-		let downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, plugins, listener)
-		if (Array.isArray(downloadObj)){
+		const downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, plugins, listener)
+		if (Array.isArray(downloadObj)) {
 			downloadObjs = downloadObjs.concat(downloadObj)
 		} else {
 			downloadObjs.push(downloadObj)
 		}
 	}
 
-	if (url.length > 1){
-		listener.send("finishGeneratingItems", {uuid: requestUUID, total: downloadObjs.length})
+	if (url.length > 1) {
+		listener.send('finishGeneratingItems', { uuid: requestUUID, total: downloadObjs.length })
 	}
 
 	const slimmedObjects: any[] = []
 
 	downloadObjs.forEach((downloadObj: any, pos: number) => {
 		// Check if element is already in queue
-		if (Object.keys(queue).includes(downloadObj.uuid)){
+		if (Object.keys(queue).includes(downloadObj.uuid)) {
 			listener.send('alreadyInQueue', downloadObj.getEssentialDict())
 			delete downloadObjs[pos]
 			return
@@ -133,7 +133,10 @@ export async function startQueue(dz: any): Promise<any> {
 			case 'Convertable':
 				downloadObject = new Convertable(currentItem)
 				downloadObject = await plugins[downloadObject.plugin].convert(dz, downloadObject, settings, listener)
-				fs.writeFileSync(configFolder + `queue${sep}${downloadObject.uuid}.json`, JSON.stringify({...downloadObject.toDict(), status: 'inQueue'}))
+				fs.writeFileSync(
+					configFolder + `queue${sep}${downloadObject.uuid}.json`,
+					JSON.stringify({ ...downloadObject.toDict(), status: 'inQueue' })
+				)
 				break
 		}
 		currentJob = new Downloader(dz, downloadObject, settings, listener)

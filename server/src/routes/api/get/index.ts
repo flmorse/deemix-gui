@@ -1,3 +1,4 @@
+import analyzeLink from './analyzeLink'
 import getHome from './getHome'
 import getCharts from './getCharts'
 import mainSearch from './mainSearch'
@@ -16,6 +17,7 @@ import getQueue from './getQueue'
 
 export default [
 	albumSearch,
+	analyzeLink,
 	getHome,
 	getCharts,
 	getChartTracks,

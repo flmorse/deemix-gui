@@ -20,42 +20,42 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		}
 		case 'spotifyplaylist':
 		case 'spotify_playlist': {
-			if (!plugins.spotify.enabled){
+			if (!plugins.spotify.enabled) {
 				res.send({
 					collaborative: false,
-					description: "",
-					external_urls: {spotify: null},
-					followers: {total: 0, href: null},
+					description: '',
+					external_urls: { spotify: null },
+					followers: { total: 0, href: null },
 					id: null,
 					images: [],
-					name: "Something went wrong",
+					name: 'Something went wrong',
 					owner: {
-						display_name: "Error",
+						display_name: 'Error',
 						id: null
 					},
 					public: true,
-					tracks : [],
+					tracks: [],
 					type: 'playlist',
 					uri: null
 				})
 				break
 			}
-			let sp = plugins.spotify.sp
+			const sp = plugins.spotify.sp
 			let playlist = await sp.getPlaylist(list_id)
 			playlist = playlist.body
 			let tracklist = playlist.tracks.items
 			while (playlist.tracks.next) {
-	      let regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next)
-				let offset = regExec![1]
-	      let limit = regExec![2]
-	      let playlistTracks = await sp.getPlaylistTracks(list_id, { offset, limit })
-	      playlist.tracks = playlistTracks.body
-	      tracklist = tracklist.concat(playlist.tracks.items)
-	    }
-			tracklist.forEach((item:any, i:number) => {
+				const regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next)
+				const offset = regExec![1]
+				const limit = regExec![2]
+				const playlistTracks = await sp.getPlaylistTracks(list_id, { offset, limit })
+				playlist.tracks = playlistTracks.body
+				tracklist = tracklist.concat(playlist.tracks.items)
+			}
+			tracklist.forEach((item: any, i: number) => {
 				tracklist[i] = item.track
 				tracklist[i].selected = false
-			});
+			})
 			playlist.tracks = tracklist
 			res.send(playlist)
 			break
