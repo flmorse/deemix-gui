@@ -25,7 +25,9 @@ plugins.spotify.setup()
 
 export const listener = {
 	send(key: string, data?: any) {
-		console.log(key, data)
+		if (data) console.log(key, data)
+		else console.log(key)
+		if (["downloadInfo", "downloadWarn"].includes(key)) return
 		wss.clients.forEach(client => {
 			if (client.readyState === WebSocket.OPEN) {
 				client.send(JSON.stringify({ key, data }))

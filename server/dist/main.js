@@ -35,7 +35,12 @@ exports.plugins = {
 exports.plugins.spotify.setup();
 exports.listener = {
     send(key, data) {
-        console.log(key, data);
+        if (data)
+            console.log(key, data);
+        else
+            console.log(key);
+        if (["downloadInfo", "downloadWarn"].includes(key))
+            return;
         app_1.wss.clients.forEach(client => {
             if (client.readyState === ws_1.default.OPEN) {
                 client.send(JSON.stringify({ key, data }));
