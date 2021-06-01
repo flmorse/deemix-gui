@@ -6,7 +6,7 @@ import deemix from 'deemix'
 import WebSocket from 'ws'
 import { wss } from './app'
 import { Settings } from './types'
-import { AlreadyInQueue, NotLoggedIn } from './helpers/errors'
+import { NotLoggedIn } from './helpers/errors'
 
 const Downloader = deemix.downloader.Downloader
 const { Single, Collection, Convertable } = deemix.types.downloadObjects
@@ -19,6 +19,7 @@ export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
 
 export const plugins: any = {
+	// eslint-disable-next-line new-cap
 	spotify: new deemix.plugins.spotify()
 }
 plugins.spotify.setup()
@@ -102,7 +103,7 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 
 		slimmedObjects.push(downloadObj.getSlimmedDict())
 	})
-	const isSingleObject = downloadObjs.length == 1
+	const isSingleObject = downloadObjs.length === 1
 	if (isSingleObject) listener.send('addedToQueue', downloadObjs[0].getSlimmedDict())
 	else listener.send('addedToQueue', slimmedObjects)
 
@@ -178,6 +179,7 @@ export function cancelDownload(uuid: string) {
 				queueOrder.splice(queueOrder.indexOf(uuid), 1)
 				fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
 			// break
+			// eslint-disable-next-line no-fallthrough
 			default:
 				// This gets called even in the 'inQueue' case. Is this the expected behaviour? If no, de-comment the break
 				listener.send('removedFromQueue', uuid)
@@ -192,7 +194,7 @@ export function cancelAllDownloads() {
 	queueOrder = []
 	let currentItem: string | null = null
 	Object.values(queue).forEach((downloadObject: any) => {
-		if (downloadObject.status == 'downloading') {
+		if (downloadObject.status === 'downloading') {
 			currentJob.downloadObject.isCanceled = true
 			listener.send('cancellingCurrentItem', downloadObject.uuid)
 			currentItem = downloadObject.uuid
@@ -218,7 +220,7 @@ export function restoreQueueFromDisk() {
 	if (!fs.existsSync(configFolder + 'queue')) fs.mkdirSync(configFolder + 'queue')
 	const allItems: string[] = fs.readdirSync(configFolder + 'queue')
 	allItems.forEach((filename: string) => {
-		if (filename == 'order.json') {
+		if (filename === 'order.json') {
 			queueOrder = JSON.parse(fs.readFileSync(configFolder + `queue${sep}order.json`).toString())
 		} else {
 			const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${filename}`).toString())

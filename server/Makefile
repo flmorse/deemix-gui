@@ -20,8 +20,11 @@ M_B ?= $(call FixPath, ./node_modules/.bin/)
 lint:
 	$(M_B)eslint "./{src, tests}/**" --fix
 
+lint-build:
+	$(M_B)eslint "./src/**" --fix
+
 test:
 	$(M_B)jest
 
-build: lint test
+build: lint-build test
 	$(M_B)tsc
