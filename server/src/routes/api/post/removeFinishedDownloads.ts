@@ -3,7 +3,7 @@ import { clearCompletedDownloads } from '../../../main'
 
 const path = '/removeFinishedDownloads'
 
-const handler: ApiHandler['handler'] = async (req, res) => {
+const handler: ApiHandler['handler'] = (_, res) => {
 	clearCompletedDownloads()
 	res.send({ result: true })
 }

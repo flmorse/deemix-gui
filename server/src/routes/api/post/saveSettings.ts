@@ -8,7 +8,7 @@ export interface SaveSettingsData {
 	spotifySettings: SpotifySettings
 }
 
-const handler: ApiHandler['handler'] = async (req, res) => {
+const handler: ApiHandler['handler'] = (req, res) => {
 	const { settings, spotifySettings }: SaveSettingsData = req.query
 	saveSettings(settings, spotifySettings)
 	listener.send('updateSettings', { settings, spotifySettings })

@@ -3,7 +3,7 @@ import { cancelAllDownloads } from '../../../main'
 
 const path = '/cancelAllDownloads'
 
-const handler: ApiHandler['handler'] = async (req, res) => {
+const handler: ApiHandler['handler'] = (_, res) => {
 	cancelAllDownloads()
 	res.send({ result: true })
 }

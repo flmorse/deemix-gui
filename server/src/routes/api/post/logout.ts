@@ -5,7 +5,7 @@ import { sessionDZ } from '../../../main'
 
 const path: ApiHandler['path'] = '/logout'
 
-const handler: ApiHandler['handler'] = async (req, res) => {
+const handler: ApiHandler['handler'] = (req, res) => {
 	sessionDZ[req.session.id] = new Deezer()
 	res.send({ logged_out: true })
 }

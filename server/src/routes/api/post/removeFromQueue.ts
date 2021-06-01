@@ -3,7 +3,7 @@ import { cancelDownload } from '../../../main'
 
 const path = '/removeFromQueue'
 
-const handler: ApiHandler['handler'] = async (req, res) => {
+const handler: ApiHandler['handler'] = (req, res) => {
 	const { uuid } = req.query
 	if (uuid) {
 		cancelDownload(uuid)
