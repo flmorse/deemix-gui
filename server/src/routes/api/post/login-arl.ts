@@ -24,13 +24,11 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, n
 	const dz = sessionDZ[req.session.id]
 
 	if (!req.query) {
-		res.status(400).send()
-		return next()
+		return res.status(400).send()
 	}
 
 	if (!req.query.arl) {
-		res.status(400).send()
-		return next()
+		return res.status(400).send()
 	}
 
 	const loginParams: (string | number)[] = [req.query.arl]
@@ -54,12 +52,10 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, n
 		const testDz = new Deezer()
 		response = await testDz.login_via_arl(...loginParams)
 	}
-	console.log(response)
 	const returnValue = { status: response, arl: req.query.arl, user: dz.current_user }
 
-	res.status(200).send(returnValue)
 	startQueue(dz)
-	next()
+	return res.status(200).send(returnValue)
 }
 
 const apiHandler = { path, handler }

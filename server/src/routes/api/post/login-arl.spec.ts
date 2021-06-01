@@ -28,13 +28,13 @@ describe('login-arl requests', () => {
 		const response = await appSendPost(`/api/login-arl/?arl=${process.env.DEEZER_ARL}`)
 
 		expect(response.status).toBe(200)
-		expect(response.body).toBe(true)
+		expect(response.body.status).toBe(true)
 	})
 
 	it('should not login using wrong ARL', async () => {
 		const response = await appSendPost(`/api/login-arl/?arl=abcdef1234`)
 
 		expect(response.status).toBe(200)
-		expect(response.body).toBe(false)
+		expect(response.body.status).toBe(false)
 	})
 })
