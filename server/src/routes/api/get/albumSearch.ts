@@ -1,7 +1,8 @@
-import { RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { ApiHandler } from '../../../types'
+
+import type { ApiHandler } from '../../../types'
 import { sessionDZ } from '../../../main'
 
 export interface RawAlbumQuery {
@@ -24,20 +25,18 @@ export interface AlbumResponse {
 
 const path: ApiHandler['path'] = '/album-search/'
 
-const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = async (req, res, next) => {
+const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 
 	if (!req.query) {
-		res.status(400).send()
-		return next()
+		return res.status(400).send()
 	}
 
 	const { term, start, nb, ack } = parseQuery(req.query)
 
 	if (!term || term.trim() === '') {
-		res.status(400).send()
-		return next()
+		return res.status(400).send()
 	}
 
 	const albums = await dz.api.search_album(term, { start, nb })
@@ -48,9 +47,7 @@ const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = async (req, res, next
 		ack
 	}
 
-	res.send(output)
-	res.send()
-	next()
+	return res.send(output)
 }
 
 const apiHandler = { path, handler }
