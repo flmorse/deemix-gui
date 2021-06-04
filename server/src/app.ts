@@ -1,7 +1,9 @@
 import http from 'http'
 import express, { Application } from 'express'
 import { Server as WsServer } from 'ws'
+import yargs from 'yargs'
 import initDebug from 'debug'
+import { hideBin } from 'yargs/helpers'
 
 import { registerMiddlewares } from './middlewares'
 
@@ -11,8 +13,16 @@ import { normalizePort } from './helpers/port'
 import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
 import { registerApis } from './routes/api/register'
 import { registerWebsocket } from './websocket'
+import type { Arguments } from './types'
 
-const PORT = normalizePort(process.env.PORT || '6595')
+// TODO: Remove type assertion while keeping correct types
+const argv = yargs(hideBin(process.argv)).options({
+	port: { type: 'string', default: '6595' },
+	host: { type: 'string', default: 'localhost' }
+}).argv as Arguments
+
+const DEEMIX_PORT = normalizePort(process.env.PORT ?? argv.port)
+const DEEMIX_HOST = process.env.HOST ?? argv.host
 
 const debug = initDebug('deemix-gui:server')
 export const app: Application = express()
@@ -29,11 +39,11 @@ app.use('/', indexRouter)
 registerApis(app)
 
 /* === Config === */
-app.set('port', PORT)
+app.set('port', DEEMIX_PORT)
 
 /* === Server port === */
 if (process.env.NODE_ENV !== 'test') {
-	server.listen(PORT)
+	server.listen({ port: DEEMIX_PORT, host: DEEMIX_HOST })
 }
 
 registerWebsocket(wss)
@@ -44,5 +54,5 @@ server.on('upgrade', (request, socket, head) => {
 		wss.emit('connection', socket, request)
 	})
 })
-server.on('error', getErrorCb(PORT))
+server.on('error', getErrorCb(DEEMIX_PORT))
 server.on('listening', getListeningCb(server, debug))
