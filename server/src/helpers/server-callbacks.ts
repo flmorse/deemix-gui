@@ -1,5 +1,6 @@
 import http from 'http'
 import type { Debugger } from 'debug'
+import { consoleInfo } from './errors'
 
 /**
  * Event listener for HTTP server "error" event.
@@ -41,7 +42,9 @@ export function getListeningCb(server: http.Server, debug: Debugger) {
 
 		if (addr) {
 			const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
-			debug('Listening on ' + bind)
+
+			debug(`Listening on ${bind}`)
+			consoleInfo(`Listening on ${bind}`)
 		}
 	}
 }

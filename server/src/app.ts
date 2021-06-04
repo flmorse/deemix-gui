@@ -14,6 +14,7 @@ import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
 import { registerApis } from './routes/api/register'
 import { registerWebsocket } from './websocket'
 import type { Arguments } from './types'
+import { consoleInfo } from './helpers/errors'
 
 // TODO: Remove type assertion while keeping correct types
 const argv = yargs(hideBin(process.argv)).options({
@@ -49,6 +50,12 @@ if (process.env.NODE_ENV !== 'test') {
 registerWebsocket(wss)
 
 /* === Server callbacks === */
+app.on('mount', a => {
+	console.log(a)
+})
+server.on('connect', () => {
+	consoleInfo('Server connected')
+})
 server.on('upgrade', (request, socket, head) => {
 	wss.handleUpgrade(request, socket, head, socket => {
 		wss.emit('connection', socket, request)
