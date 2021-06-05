@@ -79,6 +79,7 @@ function addToQueue(dz, url, bitrate) {
         if (!dz.logged_in)
             throw new errors_1.NotLoggedIn();
         let downloadObjs = [];
+        const downloadErrors = [];
         let link = '';
         const requestUUID = uuid_1.v4();
         if (url.length > 1) {
@@ -87,13 +88,25 @@ function addToQueue(dz, url, bitrate) {
         for (let i = 0; i < url.length; i++) {
             link = url[i];
             console.log(`Adding ${link} to queue`);
-            const downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, exports.plugins, exports.listener);
+            let downloadObj;
+            try {
+                downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, exports.plugins, exports.listener);
+            }
+            catch (e) {
+                downloadErrors.push(e);
+            }
             if (Array.isArray(downloadObj)) {
                 downloadObjs = downloadObjs.concat(downloadObj);
             }
-            else {
+            else if (downloadObj)
                 downloadObjs.push(downloadObj);
-            }
+        }
+        if (downloadErrors.length) {
+            downloadErrors.forEach((e) => {
+                if (!e.errid)
+                    console.trace(e);
+                exports.listener.send('queueError', { link: e.link, error: e.message, errid: e.errid });
+            });
         }
         if (url.length > 1) {
             exports.listener.send('finishGeneratingItems', { uuid: requestUUID, total: downloadObjs.length });

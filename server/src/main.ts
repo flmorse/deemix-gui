@@ -68,6 +68,7 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	if (!dz.logged_in) throw new NotLoggedIn()
 
 	let downloadObjs: any[] = []
+	const downloadErrors: any[] = []
 	let link: string = ''
 	const requestUUID = uuidv4()
 
@@ -78,12 +79,22 @@ export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	for (let i = 0; i < url.length; i++) {
 		link = url[i]
 		console.log(`Adding ${link} to queue`)
-		const downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, plugins, listener)
+		let downloadObj
+		try {
+			downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, plugins, listener)
+		} catch (e) {
+			downloadErrors.push(e)
+		}
 		if (Array.isArray(downloadObj)) {
 			downloadObjs = downloadObjs.concat(downloadObj)
-		} else {
-			downloadObjs.push(downloadObj)
-		}
+		} else if (downloadObj) downloadObjs.push(downloadObj)
+	}
+
+	if (downloadErrors.length) {
+		downloadErrors.forEach((e: any) => {
+			if (!e.errid) console.trace(e)
+			listener.send('queueError', { link: e.link, error: e.message, errid: e.errid })
+		})
 	}
 
 	if (url.length > 1) {
