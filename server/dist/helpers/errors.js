@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotLoggedIn = exports.AlreadyInQueue = exports.QueueError = exports.isBadRequestError = exports.BadRequestError = exports.consoleError = exports.consoleInfo = void 0;
 const ramda_1 = require("ramda");
 const prependDeemix = ramda_1.concat('[deemix-server]: ');
-const consoleInfo = (errorText) => console.info(prependDeemix(errorText));
+const consoleInfo = (infoText) => console.info(prependDeemix(infoText));
 exports.consoleInfo = consoleInfo;
 const consoleError = (errorText) => console.error(prependDeemix(errorText));
 exports.consoleError = consoleError;

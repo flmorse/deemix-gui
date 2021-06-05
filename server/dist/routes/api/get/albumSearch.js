@@ -13,18 +13,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const deezer_js_1 = require("deezer-js");
 const main_1 = require("../../../main");
 const path = '/album-search/';
-const handler = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!main_1.sessionDZ[req.session.id])
         main_1.sessionDZ[req.session.id] = new deezer_js_1.Deezer();
     const dz = main_1.sessionDZ[req.session.id];
     if (!req.query) {
-        res.status(400).send();
-        return next();
+        return res.status(400).send();
     }
     const { term, start, nb, ack } = parseQuery(req.query);
     if (!term || term.trim() === '') {
-        res.status(400).send();
-        return next();
+        return res.status(400).send();
     }
     const albums = yield dz.api.search_album(term, { start, nb });
     const output = {
@@ -32,9 +30,7 @@ const handler = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         total: albums.data.length,
         ack
     };
-    res.send(output);
-    res.send();
-    next();
+    return res.send(output);
 });
 const apiHandler = { path, handler };
 exports.default = apiHandler;

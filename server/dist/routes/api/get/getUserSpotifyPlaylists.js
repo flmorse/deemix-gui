@@ -14,16 +14,16 @@ const path = '/getUserSpotifyPlaylists';
 const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let data;
     if (main_1.plugins.spotify.enabled) {
-        let sp = main_1.plugins.spotify.sp;
+        const sp = main_1.plugins.spotify.sp;
         const username = req.query.spotifyUser;
         data = [];
         let playlists = yield sp.getUserPlaylists(username);
         let playlistList = playlists.body.items;
         while (playlists.next) {
-            let regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlists.next);
-            let offset = regExec[1];
-            let limit = regExec[2];
-            let newPlaylists = yield sp.getUserPlaylists(username, { offset, limit });
+            const regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlists.next);
+            const offset = regExec[1];
+            const limit = regExec[2];
+            const newPlaylists = yield sp.getUserPlaylists(username, { offset, limit });
             playlists = newPlaylists.body;
             playlistList = playlistList.concat(playlists.items);
         }

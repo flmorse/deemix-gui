@@ -20,7 +20,7 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const url = req.query.url.split(';');
     let bitrate = req.query.bitrate;
     if (bitrate === 'null')
-        bitrate = main_1.settings.maxBitrate;
+        bitrate = main_1.getSettings().settings.maxBitrate;
     let obj;
     try {
         obj = yield main_1.addToQueue(dz, url, bitrate);

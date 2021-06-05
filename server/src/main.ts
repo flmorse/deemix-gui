@@ -12,8 +12,8 @@ const Downloader = deemix.downloader.Downloader
 const { Single, Collection, Convertable } = deemix.types.downloadObjects
 export const defaultSettings: Settings = deemix.settings.DEFAULTS
 export const configFolder: string = deemix.utils.localpaths.getConfigFolder()
-export let settings: any = deemix.settings.load(configFolder)
 export const sessionDZ: any = {}
+let settings: any = deemix.settings.load(configFolder)
 
 export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
@@ -47,11 +47,22 @@ export function saveSettings(newSettings: any, newSpotifySettings: any) {
 	plugins.spotify.setCredentials(newSpotifySettings)
 }
 
-export let queueOrder: string[] = []
-export const queue: any = {}
-export let currentJob: any = null
+let queueOrder: string[] = []
+const queue: any = {}
+let currentJob: any = null
 
 restoreQueueFromDisk()
+
+export function getQueue() {
+	const result: any = {
+		queue,
+		queueOrder
+	}
+	if (currentJob && currentJob !== true) {
+		result.current = currentJob.downloadObject.getSlimmedDict()
+	}
+	return result
+}
 
 export async function addToQueue(dz: any, url: string[], bitrate: number) {
 	if (!dz.logged_in) throw new NotLoggedIn()
@@ -146,7 +157,7 @@ export async function startQueue(dz: any): Promise<any> {
 
 		if (!downloadObject.isCanceled) {
 			// Set status
-			if (downloadObject.failed == downloadObject.size) {
+			if (downloadObject.failed === downloadObject.size) {
 				queue[currentUUID].status = 'failed'
 			} else if (downloadObject.failed > 0) {
 				queue[currentUUID].status = 'withErrors'

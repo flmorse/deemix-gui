@@ -31,14 +31,9 @@ router.get('/connect', (req, res) => {
         currentUser: dz.current_user,
         deezerNotAvailable: false
     };
-    if (Object.keys(main_1.queue).length > 0) {
-        result.queue = {
-            queue: main_1.queue,
-            queueOrder: main_1.queueOrder
-        };
-        if (main_1.currentJob && main_1.currentJob !== true) {
-            result.queue.current = main_1.currentJob.downloadObject.getSlimmedDict();
-        }
+    const queue = main_1.getQueue();
+    if (Object.keys(queue.queue).length > 0) {
+        result.queue = queue;
     }
     res.send(result);
 });

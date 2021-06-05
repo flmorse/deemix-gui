@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restoreQueueFromDisk = exports.clearCompletedDownloads = exports.cancelAllDownloads = exports.cancelDownload = exports.startQueue = exports.addToQueue = exports.currentJob = exports.queue = exports.queueOrder = exports.saveSettings = exports.getSettings = exports.listener = exports.plugins = exports.getArlFromAccessToken = exports.getAccessToken = exports.sessionDZ = exports.settings = exports.configFolder = exports.defaultSettings = void 0;
+exports.restoreQueueFromDisk = exports.clearCompletedDownloads = exports.cancelAllDownloads = exports.cancelDownload = exports.startQueue = exports.addToQueue = exports.getQueue = exports.saveSettings = exports.getSettings = exports.listener = exports.plugins = exports.getArlFromAccessToken = exports.getAccessToken = exports.sessionDZ = exports.configFolder = exports.defaultSettings = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = require("path");
 const uuid_1 = require("uuid");
@@ -25,11 +25,12 @@ const Downloader = deemix_1.default.downloader.Downloader;
 const { Single, Collection, Convertable } = deemix_1.default.types.downloadObjects;
 exports.defaultSettings = deemix_1.default.settings.DEFAULTS;
 exports.configFolder = deemix_1.default.utils.localpaths.getConfigFolder();
-exports.settings = deemix_1.default.settings.load(exports.configFolder);
 exports.sessionDZ = {};
+let settings = deemix_1.default.settings.load(exports.configFolder);
 exports.getAccessToken = deemix_1.default.utils.deezer.getAccessToken;
 exports.getArlFromAccessToken = deemix_1.default.utils.deezer.getArlFromAccessToken;
 exports.plugins = {
+    // eslint-disable-next-line new-cap
     spotify: new deemix_1.default.plugins.spotify()
 };
 exports.plugins.spotify.setup();
@@ -39,7 +40,7 @@ exports.listener = {
             console.log(key, data);
         else
             console.log(key);
-        if (["downloadInfo", "downloadWarn"].includes(key))
+        if (['downloadInfo', 'downloadWarn'].includes(key))
             return;
         app_1.wss.clients.forEach(client => {
             if (client.readyState === ws_1.default.OPEN) {
@@ -49,33 +50,44 @@ exports.listener = {
     }
 };
 function getSettings() {
-    return { settings: exports.settings, defaultSettings: exports.defaultSettings, spotifySettings: exports.plugins.spotify.getCredentials() };
+    return { settings, defaultSettings: exports.defaultSettings, spotifySettings: exports.plugins.spotify.getCredentials() };
 }
 exports.getSettings = getSettings;
 function saveSettings(newSettings, newSpotifySettings) {
     deemix_1.default.settings.save(newSettings, exports.configFolder);
-    exports.settings = newSettings;
+    settings = newSettings;
     exports.plugins.spotify.setCredentials(newSpotifySettings);
 }
 exports.saveSettings = saveSettings;
-exports.queueOrder = [];
-exports.queue = {};
-exports.currentJob = null;
+let queueOrder = [];
+const queue = {};
+let currentJob = null;
 restoreQueueFromDisk();
+function getQueue() {
+    const result = {
+        queue,
+        queueOrder
+    };
+    if (currentJob && currentJob !== true) {
+        result.current = currentJob.downloadObject.getSlimmedDict();
+    }
+    return result;
+}
+exports.getQueue = getQueue;
 function addToQueue(dz, url, bitrate) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!dz.logged_in)
             throw new errors_1.NotLoggedIn();
         let downloadObjs = [];
-        let link = "";
+        let link = '';
         const requestUUID = uuid_1.v4();
         if (url.length > 1) {
-            exports.listener.send("startGeneratingItems", { uuid: requestUUID, total: url.length });
+            exports.listener.send('startGeneratingItems', { uuid: requestUUID, total: url.length });
         }
         for (let i = 0; i < url.length; i++) {
             link = url[i];
             console.log(`Adding ${link} to queue`);
-            let downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, exports.plugins, exports.listener);
+            const downloadObj = yield deemix_1.default.generateDownloadObject(dz, link, bitrate, exports.plugins, exports.listener);
             if (Array.isArray(downloadObj)) {
                 downloadObjs = downloadObjs.concat(downloadObj);
             }
@@ -84,12 +96,12 @@ function addToQueue(dz, url, bitrate) {
             }
         }
         if (url.length > 1) {
-            exports.listener.send("finishGeneratingItems", { uuid: requestUUID, total: downloadObjs.length });
+            exports.listener.send('finishGeneratingItems', { uuid: requestUUID, total: downloadObjs.length });
         }
         const slimmedObjects = [];
         downloadObjs.forEach((downloadObj, pos) => {
             // Check if element is already in queue
-            if (Object.keys(exports.queue).includes(downloadObj.uuid)) {
+            if (Object.keys(queue).includes(downloadObj.uuid)) {
                 exports.listener.send('alreadyInQueue', downloadObj.getEssentialDict());
                 delete downloadObjs[pos];
                 return;
@@ -97,16 +109,16 @@ function addToQueue(dz, url, bitrate) {
             // Save queue status when adding something to the queue
             if (!fs_1.default.existsSync(exports.configFolder + 'queue'))
                 fs_1.default.mkdirSync(exports.configFolder + 'queue');
-            exports.queueOrder.push(downloadObj.uuid);
-            fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(exports.queueOrder));
-            exports.queue[downloadObj.uuid] = downloadObj.getEssentialDict();
-            exports.queue[downloadObj.uuid].status = 'inQueue';
+            queueOrder.push(downloadObj.uuid);
+            fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(queueOrder));
+            queue[downloadObj.uuid] = downloadObj.getEssentialDict();
+            queue[downloadObj.uuid].status = 'inQueue';
             const savedObject = downloadObj.toDict();
             savedObject.status = 'inQueue';
             fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}${downloadObj.uuid}.json`, JSON.stringify(savedObject));
             slimmedObjects.push(downloadObj.getSlimmedDict());
         });
-        const isSingleObject = downloadObjs.length == 1;
+        const isSingleObject = downloadObjs.length === 1;
         if (isSingleObject)
             exports.listener.send('addedToQueue', downloadObjs[0].getSlimmedDict());
         else
@@ -119,14 +131,14 @@ exports.addToQueue = addToQueue;
 function startQueue(dz) {
     return __awaiter(this, void 0, void 0, function* () {
         do {
-            if (exports.currentJob !== null || exports.queueOrder.length === 0) {
+            if (currentJob !== null || queueOrder.length === 0) {
                 // Should not start another download
                 return null;
             }
-            exports.currentJob = true; // lock currentJob
-            const currentUUID = exports.queueOrder.shift() || '';
+            currentJob = true; // lock currentJob
+            const currentUUID = queueOrder.shift() || '';
             console.log(currentUUID);
-            exports.queue[currentUUID].status = 'downloading';
+            queue[currentUUID].status = 'downloading';
             const currentItem = JSON.parse(fs_1.default.readFileSync(exports.configFolder + `queue${path_1.sep}${currentUUID}.json`).toString());
             let downloadObject;
             switch (currentItem.__type__) {
@@ -138,79 +150,80 @@ function startQueue(dz) {
                     break;
                 case 'Convertable':
                     downloadObject = new Convertable(currentItem);
-                    downloadObject = yield exports.plugins[downloadObject.plugin].convert(dz, downloadObject, exports.settings, exports.listener);
+                    downloadObject = yield exports.plugins[downloadObject.plugin].convert(dz, downloadObject, settings, exports.listener);
                     fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}${downloadObject.uuid}.json`, JSON.stringify(Object.assign(Object.assign({}, downloadObject.toDict()), { status: 'inQueue' })));
                     break;
             }
-            exports.currentJob = new Downloader(dz, downloadObject, exports.settings, exports.listener);
+            currentJob = new Downloader(dz, downloadObject, settings, exports.listener);
             exports.listener.send('startDownload', currentUUID);
-            yield exports.currentJob.start();
+            yield currentJob.start();
             if (!downloadObject.isCanceled) {
                 // Set status
-                if (downloadObject.failed == downloadObject.size) {
-                    exports.queue[currentUUID].status = 'failed';
+                if (downloadObject.failed === downloadObject.size) {
+                    queue[currentUUID].status = 'failed';
                 }
                 else if (downloadObject.failed > 0) {
-                    exports.queue[currentUUID].status = 'withErrors';
+                    queue[currentUUID].status = 'withErrors';
                 }
                 else {
-                    exports.queue[currentUUID].status = 'completed';
+                    queue[currentUUID].status = 'completed';
                 }
                 const savedObject = downloadObject.getSlimmedDict();
-                savedObject.status = exports.queue[currentUUID].status;
+                savedObject.status = queue[currentUUID].status;
                 // Save queue status
-                exports.queue[currentUUID] = savedObject;
+                queue[currentUUID] = savedObject;
                 fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}${currentUUID}.json`, JSON.stringify(savedObject));
             }
-            console.log(exports.queueOrder);
-            fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(exports.queueOrder));
-            exports.currentJob = null;
-        } while (exports.queueOrder.length);
+            console.log(queueOrder);
+            fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(queueOrder));
+            currentJob = null;
+        } while (queueOrder.length);
     });
 }
 exports.startQueue = startQueue;
 function cancelDownload(uuid) {
-    if (Object.keys(exports.queue).includes(uuid)) {
-        switch (exports.queue[uuid].status) {
+    if (Object.keys(queue).includes(uuid)) {
+        switch (queue[uuid].status) {
             case 'downloading':
-                exports.currentJob.downloadObject.isCanceled = true;
+                currentJob.downloadObject.isCanceled = true;
                 exports.listener.send('cancellingCurrentItem', uuid);
                 break;
             case 'inQueue':
-                exports.queueOrder.splice(exports.queueOrder.indexOf(uuid), 1);
-                fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(exports.queueOrder));
+                queueOrder.splice(queueOrder.indexOf(uuid), 1);
+                fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(queueOrder));
             // break
+            // eslint-disable-next-line no-fallthrough
             default:
                 // This gets called even in the 'inQueue' case. Is this the expected behaviour? If no, de-comment the break
                 exports.listener.send('removedFromQueue', uuid);
                 break;
         }
         fs_1.default.unlinkSync(exports.configFolder + `queue${path_1.sep}${uuid}.json`);
-        delete exports.queue[uuid];
+        delete queue[uuid];
     }
 }
 exports.cancelDownload = cancelDownload;
 function cancelAllDownloads() {
-    exports.queueOrder = [];
+    queueOrder = [];
     let currentItem = null;
-    Object.values(exports.queue).forEach((downloadObject) => {
-        if (downloadObject.status == 'downloading') {
-            exports.currentJob.downloadObject.isCanceled = true;
+    Object.values(queue).forEach((downloadObject) => {
+        if (downloadObject.status === 'downloading') {
+            currentJob.downloadObject.isCanceled = true;
             exports.listener.send('cancellingCurrentItem', downloadObject.uuid);
             currentItem = downloadObject.uuid;
         }
         fs_1.default.unlinkSync(exports.configFolder + `queue${path_1.sep}${downloadObject.uuid}.json`);
-        delete exports.queue[downloadObject.uuid];
+        delete queue[downloadObject.uuid];
     });
-    fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(exports.queueOrder));
+    fs_1.default.writeFileSync(exports.configFolder + `queue${path_1.sep}order.json`, JSON.stringify(queueOrder));
     exports.listener.send('removedAllDownloads', currentItem);
 }
 exports.cancelAllDownloads = cancelAllDownloads;
 function clearCompletedDownloads() {
-    Object.values(exports.queue).forEach((downloadObject) => {
+    Object.values(queue).forEach((downloadObject) => {
         if (downloadObject.status === 'completed') {
             fs_1.default.unlinkSync(exports.configFolder + `queue${path_1.sep}${downloadObject.uuid}.json`);
-            delete exports.queue[downloadObject.uuid];
+            delete queue[downloadObject.uuid];
         }
     });
     exports.listener.send('removedFinishedDownloads');
@@ -221,8 +234,8 @@ function restoreQueueFromDisk() {
         fs_1.default.mkdirSync(exports.configFolder + 'queue');
     const allItems = fs_1.default.readdirSync(exports.configFolder + 'queue');
     allItems.forEach((filename) => {
-        if (filename == 'order.json') {
-            exports.queueOrder = JSON.parse(fs_1.default.readFileSync(exports.configFolder + `queue${path_1.sep}order.json`).toString());
+        if (filename === 'order.json') {
+            queueOrder = JSON.parse(fs_1.default.readFileSync(exports.configFolder + `queue${path_1.sep}order.json`).toString());
         }
         else {
             const currentItem = JSON.parse(fs_1.default.readFileSync(exports.configFolder + `queue${path_1.sep}${filename}`).toString());
@@ -239,11 +252,11 @@ function restoreQueueFromDisk() {
                         downloadObject = new Convertable(currentItem);
                         break;
                 }
-                exports.queue[downloadObject.uuid] = downloadObject.getEssentialDict();
-                exports.queue[downloadObject.uuid].status = 'inQueue';
+                queue[downloadObject.uuid] = downloadObject.getEssentialDict();
+                queue[downloadObject.uuid].status = 'inQueue';
             }
             else {
-                exports.queue[currentItem.uuid] = currentItem;
+                queue[currentItem.uuid] = currentItem;
             }
         }
     });

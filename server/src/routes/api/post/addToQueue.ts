@@ -1,7 +1,7 @@
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
-import { sessionDZ, addToQueue, settings, listener } from '../../../main'
+import { sessionDZ, addToQueue, getSettings, listener } from '../../../main'
 
 const path: ApiHandler['path'] = '/addToQueue'
 
@@ -11,7 +11,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 
 	const url = req.query.url.split(';')
 	let bitrate = req.query.bitrate
-	if (bitrate === 'null') bitrate = settings.maxBitrate
+	if (bitrate === 'null') bitrate = getSettings().settings.maxBitrate
 	let obj: any
 
 	try {

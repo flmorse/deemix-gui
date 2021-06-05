@@ -19,7 +19,7 @@ const LoginStatus = {
 
 const path: ApiHandler['path'] = '/login-arl'
 
-const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, next) => {
+const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 

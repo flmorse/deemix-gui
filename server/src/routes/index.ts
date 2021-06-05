@@ -1,7 +1,7 @@
 import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { sessionDZ, queue, queueOrder, currentJob } from '../main'
+import { sessionDZ, getQueue } from '../main'
 
 const router = express.Router()
 
@@ -30,14 +30,10 @@ router.get('/connect', (req, res) => {
 		deezerNotAvailable: false
 	}
 
-	if (Object.keys(queue).length > 0) {
-		result.queue = {
-			queue,
-			queueOrder
-		}
-		if (currentJob && currentJob !== true) {
-			result.queue.current = currentJob.downloadObject.getSlimmedDict()
-		}
+	const queue = getQueue()
+
+	if (Object.keys(queue.queue).length > 0) {
+		result.queue = queue
 	}
 
 	res.send(result)

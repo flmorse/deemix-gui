@@ -31,14 +31,14 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (!main_1.plugins.spotify.enabled) {
                 res.send({
                     collaborative: false,
-                    description: "",
+                    description: '',
                     external_urls: { spotify: null },
                     followers: { total: 0, href: null },
                     id: null,
                     images: [],
-                    name: "Something went wrong",
+                    name: 'Something went wrong',
                     owner: {
-                        display_name: "Error",
+                        display_name: 'Error',
                         id: null
                     },
                     public: true,
@@ -48,15 +48,15 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 });
                 break;
             }
-            let sp = main_1.plugins.spotify.sp;
+            const sp = main_1.plugins.spotify.sp;
             let playlist = yield sp.getPlaylist(list_id);
             playlist = playlist.body;
             let tracklist = playlist.tracks.items;
             while (playlist.tracks.next) {
-                let regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next);
-                let offset = regExec[1];
-                let limit = regExec[2];
-                let playlistTracks = yield sp.getPlaylistTracks(list_id, { offset, limit });
+                const regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next);
+                const offset = regExec[1];
+                const limit = regExec[2];
+                const playlistTracks = yield sp.getPlaylistTracks(list_id, { offset, limit });
                 playlist.tracks = playlistTracks.body;
                 tracklist = tracklist.concat(playlist.tracks.items);
             }

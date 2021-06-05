@@ -20,17 +20,15 @@ const LoginStatus = {
     FORCED_SUCCESS: 3
 };
 const path = '/login-arl';
-const handler = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const handler = (req, res, _) => __awaiter(void 0, void 0, void 0, function* () {
     if (!main_1.sessionDZ[req.session.id])
         main_1.sessionDZ[req.session.id] = new deezer_js_1.Deezer();
     const dz = main_1.sessionDZ[req.session.id];
     if (!req.query) {
-        res.status(400).send();
-        return next();
+        return res.status(400).send();
     }
     if (!req.query.arl) {
-        res.status(400).send();
-        return next();
+        return res.status(400).send();
     }
     const loginParams = [req.query.arl];
     // TODO Handle the child === 0 case, don't want to rely on the login_via_arl default param (it may change in the
@@ -52,11 +50,9 @@ const handler = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         const testDz = new deezer_js_1.Deezer();
         response = yield testDz.login_via_arl(...loginParams);
     }
-    console.log(response);
     const returnValue = { status: response, arl: req.query.arl, user: dz.current_user };
-    res.status(200).send(returnValue);
     main_1.startQueue(dz);
-    next();
+    return res.status(200).send(returnValue);
 });
 const apiHandler = { path, handler };
 exports.default = apiHandler;

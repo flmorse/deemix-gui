@@ -3,6 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const analyzeLink_1 = __importDefault(require("./analyzeLink"));
+const changeAccount_1 = __importDefault(require("./changeAccount"));
 const getHome_1 = __importDefault(require("./getHome"));
 const getCharts_1 = __importDefault(require("./getCharts"));
 const mainSearch_1 = __importDefault(require("./mainSearch"));
@@ -20,6 +22,8 @@ const getUserFavorites_1 = __importDefault(require("./getUserFavorites"));
 const getQueue_1 = __importDefault(require("./getQueue"));
 exports.default = [
     albumSearch_1.default,
+    changeAccount_1.default,
+    analyzeLink_1.default,
     getHome_1.default,
     getCharts_1.default,
     getChartTracks_1.default,

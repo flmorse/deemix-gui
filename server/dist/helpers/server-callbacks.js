@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getListeningCb = exports.getErrorCb = void 0;
+const errors_1 = require("./errors");
 /**
  * Event listener for HTTP server "error" event.
  *
@@ -38,7 +39,8 @@ function getListeningCb(server, debug) {
         const addr = server.address();
         if (addr) {
             const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-            debug('Listening on ' + bind);
+            debug(`Listening on ${bind}`);
+            errors_1.consoleInfo(`Listening on ${bind}`);
         }
     };
 }
