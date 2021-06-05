@@ -13,7 +13,6 @@
 		"test-watch": "jest --watch"
 	},
 	"dependencies": {
-		"@types/yargs": "17.0.0",
 		"cookie-parser": "1.4.5",
 		"debug": "2.6.9",
 		"deemix": "^0.1.3",
@@ -42,6 +41,7 @@
 		"@types/ws": "7.4.1",
 		"@typescript-eslint/eslint-plugin": "4.21.0",
 		"@typescript-eslint/parser": "4.21.0",
+		"@types/yargs": "17.0.0",
 		"eslint": "7.23.0",
 		"eslint-config-prettier": "8.1.0",
 		"eslint-plugin-prettier": "3.3.1",
