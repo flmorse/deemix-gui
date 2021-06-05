@@ -82,7 +82,7 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on('openDownloadsFolder', (event)=>{
-  const { downloadLocation } = require('./server/dist/main.js').settings
+  const { downloadLocation } = require('./server/dist/main.js').getSettings().settings
   shell.openPath(downloadLocation)
 })
 
