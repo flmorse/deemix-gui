@@ -50,13 +50,13 @@ exports.listener = {
     }
 };
 function getSettings() {
-    return { settings, defaultSettings: exports.defaultSettings, spotifySettings: exports.plugins.spotify.getCredentials() };
+    return { settings, defaultSettings: exports.defaultSettings, spotifySettings: exports.plugins.spotify.getSettings() };
 }
 exports.getSettings = getSettings;
 function saveSettings(newSettings, newSpotifySettings) {
     deemix_1.default.settings.save(newSettings, exports.configFolder);
     settings = newSettings;
-    exports.plugins.spotify.setCredentials(newSpotifySettings);
+    exports.plugins.spotify.saveSettings(newSpotifySettings);
 }
 exports.saveSettings = saveSettings;
 let queueOrder = [];

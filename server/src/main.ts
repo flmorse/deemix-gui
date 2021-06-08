@@ -38,13 +38,13 @@ export const listener = {
 }
 
 export function getSettings(): any {
-	return { settings, defaultSettings, spotifySettings: plugins.spotify.getCredentials() }
+	return { settings, defaultSettings, spotifySettings: plugins.spotify.getSettings() }
 }
 
 export function saveSettings(newSettings: any, newSpotifySettings: any) {
 	deemix.settings.save(newSettings, configFolder)
 	settings = newSettings
-	plugins.spotify.setCredentials(newSpotifySettings)
+	plugins.spotify.saveSettings(newSpotifySettings)
 }
 
 let queueOrder: string[] = []
