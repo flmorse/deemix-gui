@@ -94,7 +94,7 @@
       ]
     },
     "linux": {
-      "target": "appimage",
+      "target": ["appimage", "deb"],
       "artifactName": "deemix-gui.${ext}",
       "category": "AudioVideo,Audio",
       "icon": "build/icon.icns"
