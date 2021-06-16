@@ -1631,11 +1631,6 @@ braces@^3.0.1, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-browser-id3-writer@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/browser-id3-writer/-/browser-id3-writer-4.4.0.tgz#1810e86c214da30a1682f8fdf827bf47f7b23372"
-  integrity sha512-8xce9wo4VoKNR4udEGOAf8vndYxhToqQS+1wyrjdYVPQKRc4Wm6xwGG6XrKYgax28y5AvrbCkqK6t1RplPN2Ew==
-
 browser-process-hrtime@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
@@ -2274,13 +2269,12 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.2.1.tgz#3985eae76a5e1a2611a1dedbc6379d12c3b9c49e"
-  integrity sha512-V81mvj3benwFcUAhxE106fxGyeqqidD3tpRJUngdRmDQQE77oOXQDSUv4Upr3YvHL6XPhrZ8+4tCgxG9+zLy6A==
+deemix@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.2.2.tgz#51d8f688c294a5d36d3091bd4cb2c5f5ab8328ac"
+  integrity sha512-ODS85KDFruOX66kamvRO8E4aHnowm0eAbv+rM/L9mbA0dDg/h7jprddThq0gfT4s9dk7cU5ru51s19RC3B2Jmg==
   dependencies:
     async "^3.2.0"
-    browser-id3-writer "^4.4.0"
     crypto "^1.0.1"
     deezer-js "^0.0.8"
     got "^11.8.2"
