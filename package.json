@@ -7,30 +7,63 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "start": "electron . --dev",
-    "prebuild": "yarn --cwd ./server build && yarn --cwd ./webui build",
+    "prebuild": "yarn server-build && yarn --cwd ./webui build",
     "dist": "electron-builder",
-    "dist:dir": "electron-builder --dir"
+    "dist:dir": "electron-builder --dir",
+
+    "server-start": "yarn --cwd server start",
+    "server-start-build": "yarn --cwd server start-build",
+    "server-lint": "yarn --cwd server lint",
+    "server-build": "yarn --cwd server build",
+    "server-test": "yarn --cwd server test",
+    "server-test-watch": "yarn --cwd server test-watch"
   },
   "devDependencies": {
     "electron": "^12.0.9",
-    "electron-builder": "22.11.4"
+    "electron-builder": "22.11.4",
+
+		"@nuxtjs/eslint-config": "6.0.0",
+		"@types/cookie-parser": "1.4.2",
+		"@types/debug": "4.1.5",
+		"@types/express": "4.17.11",
+		"@types/express-session": "^1.17.3",
+		"@types/jest": "26.0.22",
+		"@types/morgan": "1.9.2",
+		"@types/node": "14.14.37",
+		"@types/ramda": "0.27.40",
+		"@types/supertest": "2.0.11",
+		"@types/uuid": "8.3.0",
+		"@types/ws": "7.4.1",
+		"@typescript-eslint/eslint-plugin": "4.21.0",
+		"@typescript-eslint/parser": "4.21.0",
+		"@types/yargs": "17.0.0",
+		"eslint": "7.23.0",
+		"eslint-config-prettier": "8.1.0",
+		"eslint-plugin-prettier": "3.3.1",
+		"jest": "26.6.3",
+		"nodemon": "2.0.7",
+		"prettier": "2.2.1",
+		"supertest": "6.1.3",
+		"ts-jest": "26.5.4",
+		"ts-node": "9.1.1",
+		"ts-node-dev": "1.1.6",
+		"typescript": "4.2.4"
   },
   "dependencies": {
     "electron-context-menu": "^3.1.0",
     "electron-window-state-manager": "^0.3.2",
-
     "cookie-parser": "1.4.5",
-		"debug": "2.6.9",
-		"deemix": "^0.2.1",
-		"deezer-js": "^1.0.0",
-		"dotenv": "8.2.0",
-		"express": "4.17.1",
-		"express-session": "^1.17.1",
-		"morgan": "1.10.0",
-		"ramda": "0.27.1",
-		"uuid": "8.3.2",
-		"ws": "7.4.5",
-		"yargs": "17.0.1"
+    "debug": "2.6.9",
+    "deemix": "0.2.2",
+    "deezer-js": "1.0.0",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "express-session": "^1.17.1",
+    "morgan": "1.10.0",
+    "ramda": "0.27.1",
+    "uuid": "8.3.2",
+    "ws": "7.4.5",
+    "yargs": "17.0.1"
   },
   "build": {
     "appId": "app.deemix.gui",
@@ -61,7 +94,7 @@
       ]
     },
     "linux": {
-      "target": "appimage",
+      "target": ["appimage", "deb"],
       "artifactName": "deemix-gui.${ext}",
       "category": "AudioVideo,Audio",
       "icon": "build/icon.icns"
