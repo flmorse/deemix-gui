@@ -2269,10 +2269,10 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.2.3.tgz#e221f2aeb12960c22816da6df545525e16f9a581"
-  integrity sha512-BgoJShAI5A3Fk0eWG4f5q+mX+GKEuzQwTWqf0+O0CEjYgUFQfEIWO4sNdmAHuXV9lA/IBHi2eszV67IHiHLamw==
+deemix@0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-0.2.4.tgz#5e1a25ac712e8e4e0f3fe472b17382970284a9c0"
+  integrity sha512-U3wVShe3uzD0xSV1Cj8fbPYhN0XdaBOut0SWP0URIEGDjzNHX0RA4/WBJ4W7CbSi88zbpI/brDYQIoaf3q49lw==
   dependencies:
     async "^3.2.0"
     crypto "^1.0.1"
