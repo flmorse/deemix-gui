@@ -11,7 +11,8 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		const username = req.query.spotifyUser
 		data = []
 		let playlists = await sp.getUserPlaylists(username)
-		let playlistList = playlists.body.items
+		playlists = playlists.body
+		let playlistList = playlists.items
 		while (playlists.next) {
 			const regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlists.next)
 			const offset = regExec![1]

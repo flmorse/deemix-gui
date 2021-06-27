@@ -18,7 +18,8 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const username = req.query.spotifyUser;
         data = [];
         let playlists = yield sp.getUserPlaylists(username);
-        let playlistList = playlists.body.items;
+        playlists = playlists.body;
+        let playlistList = playlists.items;
         while (playlists.next) {
             const regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlists.next);
             const offset = regExec[1];
