@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 // @ts-expect-error
 import deemix from 'deemix'
 import WebSocket from 'ws'
+import got from 'got'
 import { wss } from './app'
 import { Settings } from './types'
 import { NotLoggedIn } from './helpers/errors'
@@ -17,6 +18,21 @@ let settings: any = deemix.settings.load(configFolder)
 
 export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
+
+export const deemixVersion = require('../../node_modules/deemix/package.json').version
+export let deezerAvailable: boolean | null = null
+
+export async function isDeezerAvailable(): Promise<undefined>{
+	let response
+	try {
+		response = await got.get('https://www.deezer.com/', {headers: {'Cookie': 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;'}})
+	} catch {
+		deezerAvailable = false
+		return
+	}
+	const title = (response.body.match(/<title[^>]*>([^<]+)<\/title>/)![1] || "").trim()
+	deezerAvailable = title !== "Deezer will soon be available in your country."
+}
 
 export const plugins: any = {
 	// eslint-disable-next-line new-cap
