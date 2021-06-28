@@ -1,7 +1,7 @@
 import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { sessionDZ, getQueue, deemixVersion, isDeezerAvailable, deezerAvailable } from '../main'
+import { sessionDZ, getQueue, deemixVersion, isDeezerAvailable } from '../main'
 
 const router = express.Router()
 let update: any = null
@@ -27,13 +27,12 @@ router.get('/connect', async (req, res) => {
 			deemixVersion
 		}
 	}
-	if (deezerAvailable === null) await isDeezerAvailable()
 
 	const result: any = {
 		update,
 		autologin: !dz.logged_in,
 		currentUser: dz.current_user,
-		deezerAvailable
+		deezerAvailable: await isDeezerAvailable()
 	}
 
 	const queue = getQueue()

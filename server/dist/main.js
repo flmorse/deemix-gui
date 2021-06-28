@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restoreQueueFromDisk = exports.clearCompletedDownloads = exports.cancelAllDownloads = exports.cancelDownload = exports.startQueue = exports.addToQueue = exports.getQueue = exports.saveSettings = exports.getSettings = exports.listener = exports.plugins = exports.getArlFromAccessToken = exports.getAccessToken = exports.sessionDZ = exports.configFolder = exports.defaultSettings = void 0;
+exports.restoreQueueFromDisk = exports.clearCompletedDownloads = exports.cancelAllDownloads = exports.cancelDownload = exports.startQueue = exports.addToQueue = exports.getQueue = exports.saveSettings = exports.getSettings = exports.listener = exports.plugins = exports.isDeezerAvailable = exports.deemixVersion = exports.getArlFromAccessToken = exports.getAccessToken = exports.sessionDZ = exports.configFolder = exports.defaultSettings = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = require("path");
 const uuid_1 = require("uuid");
 // @ts-expect-error
 const deemix_1 = __importDefault(require("deemix"));
 const ws_1 = __importDefault(require("ws"));
+const got_1 = __importDefault(require("got"));
 const app_1 = require("./app");
 const errors_1 = require("./helpers/errors");
 const Downloader = deemix_1.default.downloader.Downloader;
@@ -29,6 +30,28 @@ exports.sessionDZ = {};
 let settings = deemix_1.default.settings.load(exports.configFolder);
 exports.getAccessToken = deemix_1.default.utils.deezer.getAccessToken;
 exports.getArlFromAccessToken = deemix_1.default.utils.deezer.getArlFromAccessToken;
+exports.deemixVersion = require('../../node_modules/deemix/package.json').version;
+let deezerAvailable = null;
+function isDeezerAvailable() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (deezerAvailable === null) {
+            let response;
+            try {
+                response = yield got_1.default.get('https://www.deezer.com/', {
+                    headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' }
+                });
+            }
+            catch (_a) {
+                deezerAvailable = false;
+                return deezerAvailable;
+            }
+            const title = (response.body.match(/<title[^>]*>([^<]+)<\/title>/)[1] || '').trim();
+            deezerAvailable = title !== 'Deezer will soon be available in your country.';
+        }
+        return deezerAvailable;
+    });
+}
+exports.isDeezerAvailable = isDeezerAvailable;
 exports.plugins = {
     // eslint-disable-next-line new-cap
     spotify: new deemix_1.default.plugins.spotify()

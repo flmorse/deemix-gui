@@ -20,18 +20,23 @@ export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
 
 export const deemixVersion = require('../../node_modules/deemix/package.json').version
-export let deezerAvailable: boolean | null = null
+let deezerAvailable: boolean | null = null
 
-export async function isDeezerAvailable(): Promise<undefined>{
-	let response
-	try {
-		response = await got.get('https://www.deezer.com/', {headers: {'Cookie': 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;'}})
-	} catch {
-		deezerAvailable = false
-		return
+export async function isDeezerAvailable(): Promise<boolean> {
+	if (deezerAvailable === null) {
+		let response
+		try {
+			response = await got.get('https://www.deezer.com/', {
+				headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' }
+			})
+		} catch {
+			deezerAvailable = false
+			return deezerAvailable
+		}
+		const title = (response.body.match(/<title[^>]*>([^<]+)<\/title>/)![1] || '').trim()
+		deezerAvailable = title !== 'Deezer will soon be available in your country.'
 	}
-	const title = (response.body.match(/<title[^>]*>([^<]+)<\/title>/)![1] || "").trim()
-	deezerAvailable = title !== "Deezer will soon be available in your country."
+	return deezerAvailable
 }
 
 export const plugins: any = {

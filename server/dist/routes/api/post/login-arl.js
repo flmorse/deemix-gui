@@ -50,6 +50,8 @@ const handler = (req, res, _) => __awaiter(void 0, void 0, void 0, function* () 
         const testDz = new deezer_js_1.Deezer();
         response = yield testDz.login_via_arl(...loginParams);
     }
+    if (!(yield main_1.isDeezerAvailable()))
+        response = LoginStatus.NOT_AVAILABLE;
     const returnValue = { status: response, arl: req.query.arl, user: dz.current_user };
     main_1.startQueue(dz);
     return res.status(200).send(returnValue);
