@@ -1,14 +1,20 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, shell, dialog, Menu} = require('electron')
+const { app, BrowserWindow, ipcMain, shell, dialog, Menu, MenuItem } = require('electron')
 const contextMenu = require('electron-context-menu')
 const WindowStateManager = require('electron-window-state-manager')
 const path = require('path')
 const os = require('os')
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv)).options({
+	port: { type: 'string', default: '6595' },
+	host: { type: 'string', default: '127.0.0.1' },
+  dev: { type: 'boolean', default: false}
+}).argv
 
-const PORT = process.env.PORT || '6595'
+const PORT = process.env.DEEMIX_PORT || argv.port
 
-function isDev() {
-  return process.argv[2] == '--dev';
-}
+process.env.DEEMIX_PORT = PORT
+process.env.DEEMIX_HOST = argv.host
 
 let win
 const windowState = new WindowStateManager('mainWindow', {
@@ -33,13 +39,16 @@ function createWindow () {
 
   win.setMenu(null)
 
-  if (isDev()){
-    globalShortcut.register('f5', function() {
-      win.reload()
-    })
-    globalShortcut.register('f12', function() {
-      win.webContents.openDevTools()
-    })
+  if (argv.dev){
+    const menu = new Menu()
+    menu.append(new MenuItem({
+      label: 'DevTools',
+      submenu: [
+        { role: 'reload', accelerator: 'f5', click: () => { win.reload() } },
+        { role: 'devtools', accelerator: 'f12', click: () => { win.webContents.toggleDevTools() } }
+      ]
+    }))
+    Menu.setApplicationMenu(menu)
   }
 
   // Open links in external browser
@@ -48,7 +57,7 @@ function createWindow () {
     shell.openExternal(url)
   })
 
-  win.loadURL(`http://localhost:${PORT}`)
+  win.loadURL(`http://${argv.host}:${PORT}`)
 
   if (windowState.maximized) {
     win.maximize();

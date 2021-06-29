@@ -21,10 +21,10 @@ const errors_1 = require("./helpers/errors");
 // TODO: Remove type assertion while keeping correct types
 const argv = yargs_1.default(helpers_1.hideBin(process.argv)).options({
     port: { type: 'string', default: '6595' },
-    host: { type: 'string', default: 'localhost' }
+    host: { type: 'string', default: '127.0.0.1' }
 }).argv;
-const DEEMIX_PORT = port_1.normalizePort((_a = process.env.PORT) !== null && _a !== void 0 ? _a : argv.port);
-const DEEMIX_HOST = (_b = process.env.HOST) !== null && _b !== void 0 ? _b : argv.host;
+const DEEMIX_PORT = port_1.normalizePort((_a = process.env.DEEMIX_PORT) !== null && _a !== void 0 ? _a : argv.port);
+const DEEMIX_HOST = (_b = process.env.DEEMIX_HOST) !== null && _b !== void 0 ? _b : argv.host;
 const debug = debug_1.default('deemix-gui:server');
 exports.app = express_1.default();
 exports.wss = new ws_1.Server({ noServer: true });

@@ -19,11 +19,11 @@ import { consoleInfo } from './helpers/errors'
 // TODO: Remove type assertion while keeping correct types
 const argv = yargs(hideBin(process.argv)).options({
 	port: { type: 'string', default: '6595' },
-	host: { type: 'string', default: 'localhost' }
+	host: { type: 'string', default: '127.0.0.1' }
 }).argv as Arguments
 
-const DEEMIX_PORT = normalizePort(process.env.PORT ?? argv.port)
-const DEEMIX_HOST = process.env.HOST ?? argv.host
+const DEEMIX_PORT = normalizePort(process.env.DEEMIX_PORT ?? argv.port)
+const DEEMIX_HOST = process.env.DEEMIX_HOST ?? argv.host
 
 const debug = initDebug('deemix-gui:server')
 export const app: Application = express()
