@@ -19,7 +19,7 @@ let settings: any = deemix.settings.load(configFolder)
 export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
 
-export const deemixVersion = require('../../node_modules/deemix/package.json').version
+export const deemixVersion = require('../node_modules/deemix/package.json').version
 let deezerAvailable: boolean | null = null
 
 export async function isDeezerAvailable(): Promise<boolean> {

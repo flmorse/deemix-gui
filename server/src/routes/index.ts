@@ -6,15 +6,6 @@ import { sessionDZ, getQueue, deemixVersion, isDeezerAvailable } from '../main'
 const router = express.Router()
 let update: any = null
 
-/**
- * GET home page
- *
- * @since	0.0.0
- */
-router.get('/', (_, res) => {
-	res.render('index', { title: 'deemix' })
-})
-
 router.get('/connect', async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]

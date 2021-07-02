@@ -10,6 +10,7 @@ const argv = yargs(hideBin(process.argv)).options({
 	host: { type: 'string', default: '127.0.0.1' },
   dev: { type: 'boolean', default: false}
 }).argv
+const server = require('./server/dist/app.js')
 
 const PORT = process.env.DEEMIX_PORT || argv.port
 
@@ -23,7 +24,6 @@ const windowState = new WindowStateManager('mainWindow', {
 })
 
 function createWindow () {
-  require('./server/dist/app.js')
   win = new BrowserWindow({
     width: windowState.width,
     height: windowState.height,
@@ -91,7 +91,7 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on('openDownloadsFolder', (event)=>{
-  const { downloadLocation } = require('./server/dist/main.js').getSettings().settings
+  const { downloadLocation } = server.getSettings().settings
   shell.openPath(downloadLocation)
 })
 
