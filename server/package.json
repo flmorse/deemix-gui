@@ -1,5 +1,5 @@
 {
-	"name": "@deemix-gui/server",
+	"name": "@deemix-gui/deemix-server",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -12,46 +12,10 @@
 		"test": "jest",
 		"test-watch": "jest --watch"
 	},
-	"dependencies": {
-		"cookie-parser": "1.4.5",
-		"debug": "2.6.9",
-		"deemix": "^0.2.1",
-		"deezer-js": "^1.0.0",
-		"dotenv": "8.2.0",
-		"express": "4.17.1",
-		"express-session": "^1.17.1",
-		"morgan": "1.10.0",
-		"ramda": "0.27.1",
-		"uuid": "8.3.2",
-		"ws": "7.4.5",
-		"yargs": "17.0.1"
-	},
-	"devDependencies": {
-		"@nuxtjs/eslint-config": "6.0.0",
-		"@types/cookie-parser": "1.4.2",
-		"@types/debug": "4.1.5",
-		"@types/express": "4.17.11",
-		"@types/express-session": "^1.17.3",
-		"@types/jest": "26.0.22",
-		"@types/morgan": "1.9.2",
-		"@types/node": "14.14.37",
-		"@types/ramda": "0.27.40",
-		"@types/supertest": "2.0.11",
-		"@types/uuid": "8.3.0",
-		"@types/ws": "7.4.1",
-		"@typescript-eslint/eslint-plugin": "4.21.0",
-		"@typescript-eslint/parser": "4.21.0",
-		"@types/yargs": "17.0.0",
-		"eslint": "7.23.0",
-		"eslint-config-prettier": "8.1.0",
-		"eslint-plugin-prettier": "3.3.1",
-		"jest": "26.6.3",
-		"nodemon": "2.0.7",
-		"prettier": "2.2.1",
-		"supertest": "6.1.3",
-		"ts-jest": "26.5.4",
-		"ts-node": "9.1.1",
-		"ts-node-dev": "1.1.6",
-		"typescript": "4.2.4"
+	"bin": "./dist/main.js",
+	"pkg": {
+		"scripts": "./dist/**/*.js",
+		"assets": "../webui/public/**/*",
+		"targets": [ "node16-linux-x64", "node16-win-x64", "node16-macos-x64"]
 	}
 }

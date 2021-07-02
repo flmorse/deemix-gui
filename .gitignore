@@ -66,3 +66,4 @@ typings/
 
 # distribution
 dist/*
+server-dist/*

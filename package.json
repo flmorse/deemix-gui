@@ -16,11 +16,13 @@
     "server-lint": "yarn --cwd server lint",
     "server-build": "yarn --cwd server build",
     "server-test": "yarn --cwd server test",
-    "server-test-watch": "yarn --cwd server test-watch"
+    "server-test-watch": "yarn --cwd server test-watch",
+    "server-dist": "./node_modules/.bin/pkg --out-dir server-dist ./server/package.json"
   },
   "devDependencies": {
     "electron": "^12.0.9",
     "electron-builder": "22.11.4",
+    "pkg": "5.3.0",
 
 		"@nuxtjs/eslint-config": "6.0.0",
 		"@types/cookie-parser": "1.4.2",
