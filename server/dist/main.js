@@ -38,10 +38,12 @@ function isDeezerAvailable() {
             let response;
             try {
                 response = yield got_1.default.get('https://www.deezer.com/', {
-                    headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' }
+                    headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' },
+                    retry: 5
                 });
             }
-            catch (_a) {
+            catch (e) {
+                console.trace(e);
                 deezerAvailable = false;
                 return deezerAvailable;
             }

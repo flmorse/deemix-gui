@@ -27,9 +27,11 @@ export async function isDeezerAvailable(): Promise<boolean> {
 		let response
 		try {
 			response = await got.get('https://www.deezer.com/', {
-				headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' }
+				headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' },
+				retry: 5
 			})
-		} catch {
+		} catch (e) {
+			console.trace(e)
 			deezerAvailable = false
 			return deezerAvailable
 		}
