@@ -9,7 +9,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 
-	const url = req.query.url.split(';')
+	const url = req.query.url.split(/[\s;]+/)
 	let bitrate = req.query.bitrate
 	if (bitrate === 'null') bitrate = getSettings().settings.maxBitrate
 	let obj: any

@@ -17,7 +17,7 @@ const handler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!main_1.sessionDZ[req.session.id])
         main_1.sessionDZ[req.session.id] = new deezer_js_1.Deezer();
     const dz = main_1.sessionDZ[req.session.id];
-    const url = req.query.url.split(';');
+    const url = req.query.url.split(/[\s;]+/);
     let bitrate = req.query.bitrate;
     if (bitrate === 'null')
         bitrate = main_1.getSettings().settings.maxBitrate;
