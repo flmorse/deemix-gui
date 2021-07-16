@@ -6,6 +6,8 @@ import session from 'express-session'
 
 import { WEBUI_DIR } from './helpers/paths'
 
+const MemoryStore = require('memorystore')(session)
+
 declare module 'express-session' {
 	export interface SessionData {
 		dz: any
@@ -22,6 +24,9 @@ export function registerMiddlewares(app: Application) {
 	app.use(cookieParser())
 	app.use(
 		session({
+			store: new MemoryStore({
+				checkPeriod: 86400000 // prune expired entries every 24h
+			}),
 			secret: 'U2hoLCBpdHMgYSBzZWNyZXQh',
 			resave: true,
 			saveUninitialized: true

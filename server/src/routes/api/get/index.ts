@@ -4,8 +4,9 @@ import getHome from './getHome'
 import getCharts from './getCharts'
 import mainSearch from './mainSearch'
 import search from './search'
+import newReleases from './newReleases'
 import getTracklist from './getTracklist'
-import albumSearch from './albumSearch'
+import { apiHandler as albumSearch } from './albumSearch'
 import getChartTracks from './getChartTracks'
 import getSettings from './getSettings'
 import getUserTracks from './getUserTracks'
@@ -25,6 +26,7 @@ export default [
 	getChartTracks,
 	mainSearch,
 	search,
+	newReleases,
 	getTracklist,
 	getSettings,
 	getUserTracks,

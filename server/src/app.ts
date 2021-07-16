@@ -16,6 +16,8 @@ import { registerWebsocket } from './websocket'
 import type { Arguments } from './types'
 import { consoleInfo } from './helpers/errors'
 
+export { getSettings } from './main'
+
 // TODO: Remove type assertion while keeping correct types
 const argv = yargs(hideBin(process.argv)).options({
 	port: { type: 'string', default: '6595' },
@@ -26,8 +28,8 @@ const DEEMIX_PORT = normalizePort(process.env.DEEMIX_PORT ?? argv.port)
 const DEEMIX_HOST = process.env.DEEMIX_HOST ?? argv.host
 
 const debug = initDebug('deemix-gui:server')
-export const app: Application = express()
 export const wss = new WsServer({ noServer: true })
+const app: Application = express()
 const server = http.createServer(app)
 
 /* === Middlewares === */
