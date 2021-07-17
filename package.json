@@ -6,6 +6,7 @@
   "author": "RemixDev <RemixDev64@gmail.com>",
   "license": "GPL-3.0-only",
   "scripts": {
+    "dev": "yarn --cwd webui dev",
     "start": "electron . --dev",
     "prebuild": "yarn server-build && yarn --cwd ./webui build",
     "predist": "yarn prebuild",
