@@ -12,9 +12,9 @@ const argv = yargs(hideBin(process.argv)).options({
 }).argv
 const server = require('./server/dist/app.js')
 
-const PORT = process.env.DEEMIX_PORT || argv.port
+const PORT = process.env.DEEMIX_SERVER_PORT || argv.port
 
-process.env.DEEMIX_PORT = PORT
+process.env.DEEMIX_SERVER_PORT = PORT
 process.env.DEEMIX_HOST = argv.host
 
 let win

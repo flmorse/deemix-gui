@@ -24,7 +24,7 @@ const argv = yargs(hideBin(process.argv)).options({
 	host: { type: 'string', default: '127.0.0.1' }
 }).argv as Arguments
 
-const DEEMIX_PORT = normalizePort(process.env.DEEMIX_PORT ?? argv.port)
+const DEEMIX_SERVER_PORT = normalizePort(process.env.DEEMIX_SERVER_PORT ?? argv.port)
 const DEEMIX_HOST = process.env.DEEMIX_HOST ?? argv.host
 
 const debug = initDebug('deemix-gui:server')
@@ -42,11 +42,11 @@ app.use('/', indexRouter)
 registerApis(app)
 
 /* === Config === */
-app.set('port', DEEMIX_PORT)
+app.set('port', DEEMIX_SERVER_PORT)
 
 /* === Server port === */
 if (process.env.NODE_ENV !== 'test') {
-	server.listen({ port: DEEMIX_PORT, host: DEEMIX_HOST })
+	server.listen({ port: DEEMIX_SERVER_PORT, host: DEEMIX_HOST })
 }
 
 registerWebsocket(wss)
@@ -63,5 +63,5 @@ server.on('upgrade', (request, socket, head) => {
 		wss.emit('connection', socket, request)
 	})
 })
-server.on('error', getErrorCb(DEEMIX_PORT))
+server.on('error', getErrorCb(DEEMIX_SERVER_PORT))
 server.on('listening', getListeningCb(server, debug))
