@@ -13,5 +13,5 @@ export default new Vuex.Store({
 		login,
 		errors
 	},
-	strict: process.env.NODE_ENV !== 'production'
+	strict: !import.meta.env.PROD
 })

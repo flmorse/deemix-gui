@@ -11,7 +11,8 @@
 		<ul>
 			<li>
 				{{ $t('about.updates.currentWebuiVersion') }}:
-				<span>{{ __VER__ || $t('about.updates.versionNotAvailable') }}</span>
+				<!--				<span>{{  __VER__ || $t('about.updates.versionNotAvailable') }}</span>-->
+				<span>{{ currentVersion || $t('about.updates.versionNotAvailable') }}</span>
 			</li>
 			<li>
 				{{ $t('about.updates.currentVersion') }}:
@@ -181,7 +182,8 @@ export default defineComponent({
 			...toRefs(state),
 			paypal,
 			ethereum,
-			isOnline
+			isOnline,
+			currentVersion: __VER__
 		}
 	}
 })
