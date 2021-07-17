@@ -29,7 +29,7 @@ const DEEMIX_HOST = process.env.DEEMIX_HOST ?? argv.host
 
 const debug = initDebug('deemix-gui:server')
 export const wss = new WsServer({ noServer: true })
-const app: Application = express()
+export const app: Application = express()
 const server = http.createServer(app)
 
 /* === Middlewares === */

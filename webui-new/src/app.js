@@ -35,7 +35,7 @@ async function startApp() {
 		render: h => h(App)
 	}).$mount('#app')
 
-	const connectResponse = await (await fetch(`${SERVER_ENDPOINT}/connect`)).json()
+	const connectResponse = await (await fetch(`${SERVER_ENDPOINT}/connect`, { credentials: 'include' })).json()
 	if (!connectResponse.deezerAvailable) document.getElementById('deezer_not_available').classList.remove('hide')
 
 	store.dispatch('setAppInfo', connectResponse.update).catch(console.error)

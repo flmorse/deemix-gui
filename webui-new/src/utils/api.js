@@ -2,6 +2,10 @@
 export const SERVER_ENDPOINT = 'http://localhost:6595'
 export const SERVER_HOST = 'localhost:6595'
 
+const commonOptions = {
+	credentials: 'include'
+}
+
 export function fetchData(key, data = {}, method = 'GET') {
 	const url = new URL(`${SERVER_ENDPOINT}/api/${key}`)
 
@@ -9,7 +13,7 @@ export function fetchData(key, data = {}, method = 'GET') {
 		url.searchParams.append(key, data[key])
 	})
 
-	return fetch(url.href, { method })
+	return fetch(url.href, { ...commonOptions, method })
 		.then(response => response.json())
 		.catch(error => {
 			console.error('There has been a problem with your fetch operation:', error)
@@ -33,6 +37,7 @@ export const postToServer = (endpoint, data) => {
 	const url = new URL(`${SERVER_ENDPOINT}/api/${endpoint}`)
 
 	return fetch(url, {
+		...commonOptions,
 		body: JSON.stringify(data),
 		headers: {
 			'Content-Type': 'application/json'
