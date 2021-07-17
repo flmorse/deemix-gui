@@ -8,9 +8,9 @@
   "scripts": {
     "start": "electron . --dev",
     "prebuild": "yarn server-build && yarn --cwd ./webui build",
+    "predist": "yarn prebuild",
     "dist": "electron-builder",
     "dist:dir": "electron-builder --dir",
-
     "server-start": "yarn --cwd server start",
     "server-start-build": "yarn --cwd server start-build",
     "server-lint": "yarn --cwd server lint",
@@ -58,7 +58,10 @@
       ]
     },
     "linux": {
-      "target": ["appimage", "deb"],
+      "target": [
+        "appimage",
+        "deb"
+      ],
       "artifactName": "deemix-gui.${ext}",
       "category": "AudioVideo,Audio",
       "icon": "build/icon.icns"
