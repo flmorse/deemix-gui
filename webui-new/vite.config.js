@@ -8,7 +8,8 @@ import { version } from './package.json'
 export default defineConfig({
 	publicDir: 'static',
 	build: {
-		outDir: path.resolve(__dirname, '/public')
+		assetsDir: '',
+		outDir: 'public'
 	},
 	plugins: [
 		createVuePlugin(),

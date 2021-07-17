@@ -1,3 +1,9 @@
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
 /*!
  *  Copyright 2010 LearnBoost <dev@learnboost.com>
  *

@@ -34,13 +34,15 @@ export function registerMiddlewares(app: Application) {
 		})
 	)
 
+	// Enabling CORS only in dev because the dev server is on a different port
+	// while in production there's no dev server and the built webui is served
 	if (process.env.NODE_ENV === 'production') {
 		app.use(express.static(WEBUI_DIR))
 	} else {
 		app.use(
 			cors({
 				credentials: true,
-				origin: 'http://localhost:3000'
+				origin: ['http://localhost:3000', 'http://localhost:5000']
 			})
 		)
 	}
