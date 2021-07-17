@@ -3,6 +3,7 @@ import express from 'express'
 import logger from 'morgan'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import cors from 'cors'
 
 import { WEBUI_DIR } from './helpers/paths'
 
@@ -32,5 +33,15 @@ export function registerMiddlewares(app: Application) {
 			saveUninitialized: true
 		})
 	)
-	app.use(express.static(WEBUI_DIR))
+
+	if (process.env.NODE_ENV === 'production') {
+		app.use(express.static(WEBUI_DIR))
+	} else {
+		app.use(
+			cors({
+				credentials: true,
+				origin: 'http://localhost:3000'
+			})
+		)
+	}
 }

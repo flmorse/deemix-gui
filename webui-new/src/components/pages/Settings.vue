@@ -93,8 +93,10 @@
 					:title="locale"
 					class="inline-flex items-center locale-flag"
 					@click="changeLocale(locale)"
-					v-html="flags[locale]"
-				/>
+				>
+					<!--					v-html="flags[locale]"-->
+					<img :src="flags[locale]" />
+				</li>
 			</ul>
 		</div>
 
@@ -1042,12 +1044,14 @@ export default {
 	}
 
 	&.locale-flag--current {
-		::v-deep svg {
+		::v-deep svg,
+		::v-deep img {
 			filter: brightness(1) !important;
 		}
 	}
 
-	&::v-deep svg {
+	&::v-deep svg,
+	&::v-deep img {
 		width: 40px !important;
 		height: 40px !important;
 		filter: brightness(0.5);

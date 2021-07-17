@@ -1,3 +1,5 @@
+import { SERVER_HOST } from '@/utils/api'
+
 class CustomSocket extends WebSocket {
 	constructor(args) {
 		super(args)
@@ -34,4 +36,5 @@ class CustomSocket extends WebSocket {
 	}
 }
 
-export const socket = new CustomSocket('ws://' + location.host + '/')
+// export const socket = new CustomSocket('ws://' + location.host + '/')
+export const socket = new CustomSocket('ws://' + SERVER_HOST + '/')

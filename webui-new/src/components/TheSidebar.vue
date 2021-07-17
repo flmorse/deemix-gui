@@ -7,7 +7,11 @@
 		class="top-0 left-0 flex flex-col h-screen bg-panels-bg text-foreground"
 		role="navigation"
 	>
-		<div class="deemix-icon-container" v-html="deemixIcon" />
+		<!--		<div class="deemix-icon-container" v-html="deemixIcon" />-->
+		<div class="deemix-icon-container">
+			<img src="@/assets/deemix-icon.svg" alt="deemix icon" />
+		</div>
+
 		<router-link
 			v-for="link in links"
 			:key="link.name"
