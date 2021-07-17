@@ -6,6 +6,10 @@ import replace from '@rollup/plugin-replace'
 import { version } from './package.json'
 
 export default defineConfig({
+	publicDir: 'static',
+	build: {
+		outDir: path.resolve(__dirname, '/public')
+	},
 	plugins: [
 		createVuePlugin(),
 		replace({
