@@ -4,7 +4,7 @@ const fs = require('fs')
 function generateVersion(){
   const now = new Date();
   const year = now.getFullYear();
-  const month = now.getMonth();
+  const month = now.getMonth()+1;
   const day = now.getDate();
 
   const commitsNumber = String(execSync('git rev-list --count HEAD')).trim()
