@@ -2148,14 +2148,14 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.2.1.tgz#3017efb1669ee3a5885ba8ca878278d200429fd3"
-  integrity sha512-uaWDtJTNPgHjcWQWqBM6Nq4BBkw8YKuKuBhe2+cOp8brimdYcAVrOPQnUNvZBH5zi52EFXJQAYwrkmTJZO25ZA==
+deemix@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.3.1.tgz#0a61601b3d75f182f6db8c388bd70f2e7ff88256"
+  integrity sha512-JwCY9DIUQBZfnrnVaKbZomTbURlhnDJCSriH2GMMJYJOvt7TacNodnEwWMO7ELsK/SNG7ZKgQH5+ACBnhxRtIQ==
   dependencies:
     async "^3.2.0"
     crypto "^1.0.1"
-    deezer-js "^0.0.8"
+    deezer-js "^1.0.1"
     got "^11.8.2"
     metaflac-js2 "^1.0.7"
     spotify-web-api-node "^5.0.2"
@@ -2175,18 +2175,10 @@ deepmerge@^4.0.0, deepmerge@^4.2.2:
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
 
-deezer-js@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-0.0.8.tgz#cadc58eb43bc43dd9a6ec5fdefe5a9f562b8e2bf"
-  integrity sha512-hOc9C8iRDqw3SS5kF86ss0zWOoPF0C0eg1G+qi8f2gvzNofBzpkuBQ5lCfWYnkKv77w1SQWb4gDtGDYkmkGZuw==
-  dependencies:
-    got "^11.8.2"
-    tough-cookie "^4.0.0"
-
-deezer-js@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-1.0.0.tgz#fa206afe6cd19ad7ecf21a8f60a49589cdf70303"
-  integrity sha512-jcAheb/EvUZF/mN5csH4ikq0WLzVMzWGONUUomMu7sZsK9w54I/UzvKdEc6st+4d/rLNZr9LKWdqrFsGt4y/Nw==
+deezer-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-1.0.1.tgz#97c3d3c7e84c333a331ecae6aa41d3270e3d4390"
+  integrity sha512-nD6E2+txyiAd9QnIY7anvzhiEH8myIAP8guIRJorCW/shkO6pBWdyXvHvjrf8mrWJGpL1T00qoe81uFPOQez2A==
   dependencies:
     got "^11.8.2"
     tough-cookie "^4.0.0"
