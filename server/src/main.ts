@@ -65,6 +65,7 @@ export function getSettings(): any {
 }
 
 export function saveSettings(newSettings: any, newSpotifySettings: any) {
+	newSettings.executeCommand = settings.executeCommand
 	deemix.settings.save(newSettings, configFolder)
 	settings = newSettings
 	plugins.spotify.saveSettings(newSpotifySettings)
