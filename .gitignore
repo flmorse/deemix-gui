@@ -64,6 +64,9 @@ typings/
 .vscode
 .idea
 
+# development
+*.map
+
 # distribution
 dist/*
 server-dist/*

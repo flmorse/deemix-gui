@@ -49,8 +49,8 @@ plugins.spotify.setup()
 
 export const listener = {
 	send(key: string, data?: any) {
-		if (data) console.log(key, data)
-		else console.log(key)
+		const logLine = deemix.utils.formatListener(key, data)
+		if (logLine) console.log(logLine)
 		if (['downloadInfo', 'downloadWarn'].includes(key)) return
 		wss.clients.forEach(client => {
 			if (client.readyState === WebSocket.OPEN) {
