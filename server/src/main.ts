@@ -192,7 +192,7 @@ export async function startQueue(dz: any): Promise<any> {
 
 		if (!downloadObject.isCanceled) {
 			// Set status
-			if (downloadObject.failed === downloadObject.size) {
+			if (downloadObject.failed === downloadObject.size && downloadObject.size !== 0) {
 				queue[currentUUID].status = 'failed'
 			} else if (downloadObject.failed > 0) {
 				queue[currentUUID].status = 'withErrors'
