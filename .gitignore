@@ -66,6 +66,7 @@ typings/
 
 # development
 *.map
+dev.sh
 
 # distribution
 dist/*
