@@ -2141,10 +2141,10 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.3.5.tgz#a718a359c86640ed717ce67a59e1e19c10958f67"
-  integrity sha512-VfQ7UgFTJmUtFztaBIm2OxxifxNiPBk6wHO2bvZ5h9j1sdU7HXHip7mcrlFsgeOjPfcIhaT5U+8pYyA4cSgHcA==
+deemix@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.3.6.tgz#831763e28a1db9752a9791478a1fbfb71d775bfe"
+  integrity sha512-BcTevSrunOOTH0pM9WX7FYgsXhy2wiZwMf2s+q7TTyaShMrcM3qAsn8LxddUMvim6ZCnTcXDY704HCxRAWjo9A==
   dependencies:
     async "^3.2.0"
     crypto "^1.0.1"
@@ -2168,7 +2168,7 @@ deepmerge@^4.0.0, deepmerge@^4.2.2:
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
 
-deezer-js@1.0.5, deezer-js@^1.0.5:
+deezer-js@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-1.0.5.tgz#566ad6d924122dfa9d3f7595a805964978defa0d"
   integrity sha512-UJwQkaUZONr6/nvutCk3bxmUYBtLb0lEcScHgR82FsfFjLTqMJJT/3uuqX/NF5qRfop2HWPyAzJWDUKDVu6pJw==
