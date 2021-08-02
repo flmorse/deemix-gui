@@ -2141,10 +2141,10 @@ decompress-response@^6.0.0:
   dependencies:
     mimic-response "^3.1.0"
 
-deemix@^3.3.6:
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.3.6.tgz#831763e28a1db9752a9791478a1fbfb71d775bfe"
-  integrity sha512-BcTevSrunOOTH0pM9WX7FYgsXhy2wiZwMf2s+q7TTyaShMrcM3qAsn8LxddUMvim6ZCnTcXDY704HCxRAWjo9A==
+deemix@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.4.0.tgz#3ab78b1229ea5860dab7b487b2dfa8e2147eab9b"
+  integrity sha512-4TIZxzn3CmWX8s+dhaCMxNxu/PfLzmVyd0yAoIBq/cfbZ2EV5FE/nDkuJ1obXms3VyUy38umF9htN0uJzINwgw==
   dependencies:
     async "^3.2.0"
     crypto "^1.0.1"
@@ -2172,6 +2172,14 @@ deezer-js@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-1.0.5.tgz#566ad6d924122dfa9d3f7595a805964978defa0d"
   integrity sha512-UJwQkaUZONr6/nvutCk3bxmUYBtLb0lEcScHgR82FsfFjLTqMJJT/3uuqX/NF5qRfop2HWPyAzJWDUKDVu6pJw==
+  dependencies:
+    got "^11.8.2"
+    tough-cookie "^4.0.0"
+
+deezer-js@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-1.1.1.tgz#e8a3777abb225233eca17a03c2520122ee910ba1"
+  integrity sha512-bqzSXAje5BVbRmEAaB1cM4O+ZtKuki4ZF6uFE+Xc3vBZRA45mUBtqmYi/BKDUP9RLvWo5qvyvm09ZM/CqyYHwA==
   dependencies:
     got "^11.8.2"
     tough-cookie "^4.0.0"
