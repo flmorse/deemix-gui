@@ -3,7 +3,7 @@ import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { GUI_PACKAGE } from '../helpers/paths'
-import { sessionDZ, getQueue, deemixVersion, isDeezerAvailable } from '../main'
+import { sessionDZ, getQueue, deemixVersion, isDeezerAvailable, plugins } from '../main'
 
 const router = express.Router()
 let update: any = null
@@ -27,7 +27,8 @@ router.get('/connect', async (req, res) => {
 		update,
 		autologin: !dz.logged_in,
 		currentUser: dz.current_user,
-		deezerAvailable: await isDeezerAvailable()
+		deezerAvailable: await isDeezerAvailable(),
+		spotifyEnabled: plugins.spotify.enabled
 	}
 
 	const queue = getQueue()
