@@ -53,7 +53,13 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _
 		response = await testDz.login_via_arl(...loginParams)
 	}
 	if (!(await isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE
-	const returnValue = { status: response, arl: req.query.arl, user: dz.current_user }
+	const returnValue = {
+		status: response,
+		arl: req.query.arl,
+		user: dz.current_user,
+		childs: dz.childs,
+		currentChild: dz.selected_account
+	}
 
 	startQueue(dz)
 	return res.status(200).send(returnValue)
