@@ -28,6 +28,9 @@ export async function isDeezerAvailable(): Promise<boolean> {
 		try {
 			response = await got.get('https://www.deezer.com/', {
 				headers: { Cookie: 'dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;' },
+				https: {
+					rejectUnauthorized: false
+				},
 				retry: 5
 			})
 		} catch (e) {
