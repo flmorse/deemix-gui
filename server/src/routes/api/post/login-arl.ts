@@ -52,6 +52,7 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _
 		const testDz = new Deezer()
 		response = await testDz.login_via_arl(...loginParams)
 	}
+	if (response === LoginStatus.FAILED) sessionDZ[req.session.id] = new Deezer()
 	if (!(await isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE
 	const returnValue = {
 		status: response,
@@ -61,7 +62,7 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _
 		currentChild: dz.selected_account
 	}
 
-	startQueue(dz)
+	if (response !== LoginStatus.NOT_AVAILABLE && response !== LoginStatus.FAILED) startQueue(dz)
 	return res.status(200).send(returnValue)
 }
 
