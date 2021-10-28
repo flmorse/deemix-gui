@@ -2135,6 +2135,14 @@ deezer-js@1.2.4:
     got "^11.8.2"
     tough-cookie "^4.0.0"
 
+deezer-js@1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/deezer-js/-/deezer-js-1.2.5.tgz#9842af71c857cd86b276973284aaacceb4bfa790"
+  integrity sha512-Rdg8LpQDoElRn0WI+x+JzTwOZpuuZQmRw/pyDfBBSUI/peITYg+TVy6wdGCoWHv/HIeQJ3U7f3ApWQqoqyyZAw==
+  dependencies:
+    got "^11.8.2"
+    tough-cookie "^4.0.0"
+
 defer-to-connect@^1.0.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-1.1.3.tgz#331ae050c08dcf789f8c83a7b81f0ed94f4ac591"
