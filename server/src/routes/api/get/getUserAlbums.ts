@@ -12,12 +12,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 
 	if (dz.logged_in) {
 		const userID = dz.current_user.id
-		try {
-			data = await dz.api.get_user_albums(userID, { limit: -1 })
-			data = data.data
-		} catch {
-			data = await dz.gw.get_user_albums(userID, { limit: -1 })
-		}
+		data = await dz.gw.get_user_albums(userID, { limit: -1 })
 	} else {
 		data = { error: 'notLoggedIn' }
 	}
