@@ -9,6 +9,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 
 	if (!accessToken) {
 		accessToken = await getAccessToken(email, password)
+		if (accessToken === 'undefined') accessToken = undefined
 	}
 	let arl
 	if (accessToken) arl = await getArlFromAccessToken(accessToken)
