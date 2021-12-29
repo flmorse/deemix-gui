@@ -18,6 +18,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		result.albums = await dz.gw.get_user_albums(userID, { limit: -1 })
 		result.artists = await dz.gw.get_user_artists(userID, { limit: -1 })
 		result.tracks = await dz.gw.get_user_tracks(userID, { limit: -1 })
+		result.lovedTracks = `https://deezer.com/playlist/${dz.current_user.loved_tracks}`
 	} else {
 		result = { error: 'notLoggedIn' }
 	}
