@@ -868,9 +868,9 @@
   integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
 
 "@types/superagent@*":
-  version "4.1.13"
-  resolved "https://registry.yarnpkg.com/@types/superagent/-/superagent-4.1.13.tgz#0aaa3f4ff9404b94932d1dcdfb7f3d39d23997a0"
-  integrity sha512-YIGelp3ZyMiH0/A09PMAORO0EBGlF5xIKfDpK74wdYvWUs2o96b5CItJcWPdH409b7SAXIIG6p8NdU/4U2Maww==
+  version "4.1.14"
+  resolved "https://registry.yarnpkg.com/@types/superagent/-/superagent-4.1.14.tgz#ca2eed4fad671e704d3d0f33aaf099edb4a5b857"
+  integrity sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==
   dependencies:
     "@types/cookiejar" "*"
     "@types/node" "*"
@@ -2080,9 +2080,9 @@ decompress-response@^6.0.0:
     mimic-response "^3.1.0"
 
 deemix@^3.6.0:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.6.2.tgz#54ff066c2c8ca918c777f33df4171880524a55c1"
-  integrity sha512-jFy5AoCW/yBY4FwOXTf5wkXnYXF9eN4DutjfraVI9ZcWcyMVQzlrgdcxu1e8BlJKGLGmGoY5sGGyGMadd+LWzQ==
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.6.3.tgz#c73cfda11331d1944d01acfc9a31896494f6816f"
+  integrity sha512-Too+9MKTmiPXHNspKD+Izz3/IhVmYY7VVsZzVG3u0jqOcTiyEAoaDiCifM9MQKt0EBy7Vc/HPRrjY0htS7d4Qg==
   dependencies:
     async "^3.2.0"
     crypto "^1.0.1"
@@ -2246,9 +2246,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.4.17:
-  version "1.4.29"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.29.tgz#a9b85ab888d0122124c9647c04d8dd246fae94b6"
-  integrity sha512-N2Jbwxo5Rum8G2YXeUxycs1sv4Qme/ry71HG73bv8BvZl+I/4JtRgK/En+ST/Wh/yF1fqvVCY4jZBgMxnhjtBA==
+  version "1.4.30"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.30.tgz#0f75a1dce26dffbd5a0f7212e5b87fe0b61cbc76"
+  integrity sha512-609z9sIMxDHg+TcR/VB3MXwH+uwtrYyeAwWc/orhnr90ixs6WVGSrt85CDLGUdNnLqCA7liv426V20EecjvflQ==
 
 emittery@^0.7.1:
   version "0.7.2"
@@ -3745,9 +3745,9 @@ istanbul-lib-source-maps@^4.0.0:
     source-map "^0.6.1"
 
 istanbul-reports@^3.0.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/istanbul-reports/-/istanbul-reports-3.1.2.tgz#b80e13cbab0120e1c367ebaa099862361aed5ead"
-  integrity sha512-0gHxuT1NNC0aEIL1zbJ+MTgPbbHhU77eJPuU35WKA7TgXiSNlCAx4PENoMrH0Or6M2H80TaZcWKhM0IK6V8gRw==
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/istanbul-reports/-/istanbul-reports-3.1.3.tgz#4bcae3103b94518117930d51283690960b50d3c2"
+  integrity sha512-x9LtDVtfm/t1GFiLl3NffC7hz+I1ragvgX1P/Lg1NlIagifZDKUkuuaAxH/qpwj2IuEfD8G2Bs/UKp+sZ/pKkg==
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
