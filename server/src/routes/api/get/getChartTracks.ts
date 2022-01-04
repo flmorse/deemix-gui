@@ -29,8 +29,7 @@ const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (req, res
 		const limit = req.query.limit
 
 		const response = await dz.api.get_playlist_tracks(playlistId, { index, limit })
-		res.status(200).send(response)
-		next()
+		return res.status(200).send(response)
 	} catch (error) {
 		if (isBadRequestError(error)) {
 			consoleError(error.message)
