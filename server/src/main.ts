@@ -270,9 +270,20 @@ export function restoreQueueFromDisk() {
 	const allItems: string[] = fs.readdirSync(configFolder + 'queue')
 	allItems.forEach((filename: string) => {
 		if (filename === 'order.json') {
-			queueOrder = JSON.parse(fs.readFileSync(configFolder + `queue${sep}order.json`).toString())
+			try {
+				queueOrder = JSON.parse(fs.readFileSync(configFolder + `queue${sep}order.json`).toString())
+			} catch {
+				queueOrder = []
+				fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(queueOrder))
+			}
 		} else {
-			const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${filename}`).toString())
+			let currentItem: any
+			try {
+				currentItem = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${filename}`).toString())
+			} catch {
+				fs.unlinkSync(configFolder + `queue${sep}${filename}`)
+				return
+			}
 			if (currentItem.status === 'inQueue') {
 				let downloadObject: any
 				switch (currentItem.__type__) {
