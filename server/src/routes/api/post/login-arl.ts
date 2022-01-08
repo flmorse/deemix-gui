@@ -43,7 +43,12 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _
 
 	if (process.env.NODE_ENV !== 'test') {
 		if (!dz.logged_in) {
-			response = await dz.login_via_arl(...loginParams)
+			try {
+				response = await dz.login_via_arl(...loginParams)
+			} catch (e) {
+				console.trace(e)
+				response = false
+			}
 			response = response ? 1 : 0
 		} else {
 			response = LoginStatus.ALREADY_LOGGED

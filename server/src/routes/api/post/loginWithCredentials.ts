@@ -14,7 +14,6 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	let arl
 	if (accessToken) arl = await getArlFromAccessToken(accessToken)
 
-	console.log({ accessToken, arl })
 	res.send({ accessToken, arl })
 }
 
