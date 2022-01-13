@@ -9,6 +9,8 @@ import { wss } from './app'
 import { Settings } from './types'
 import { NotLoggedIn } from './helpers/errors'
 
+import { GUI_PACKAGE } from './helpers/paths'
+
 const Downloader = deemix.downloader.Downloader
 const { Single, Collection, Convertable } = deemix.types.downloadObjects
 export const defaultSettings: Settings = deemix.settings.DEFAULTS
@@ -20,7 +22,10 @@ export const getAccessToken = deemix.utils.deezer.getAccessToken
 export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken
 
 export const deemixVersion = require('../node_modules/deemix/package.json').version
+const currentVersionTemp = JSON.parse(String(fs.readFileSync(GUI_PACKAGE))).version
+export const currentVersion = currentVersionTemp === '0.0.0' ? 'continuous' : currentVersionTemp
 let deezerAvailable: boolean | null = null
+let latestVersion: string | null = null
 
 export async function isDeezerAvailable(): Promise<boolean> {
 	if (deezerAvailable === null) {
@@ -42,6 +47,54 @@ export async function isDeezerAvailable(): Promise<boolean> {
 		deezerAvailable = title !== 'Deezer will soon be available in your country.'
 	}
 	return deezerAvailable
+}
+
+export async function getLatestVersion(force = false): Promise<string | null> {
+	if ((latestVersion === null || force) && !settings.disableUpdateCheck) {
+		let response
+		try {
+			response = await got.get('https://deemix.app/gui/latest', {
+				https: {
+					rejectUnauthorized: false
+				}
+			})
+		} catch (e) {
+			console.trace(e)
+			latestVersion = 'NotFound'
+			return latestVersion
+		}
+		latestVersion = response.body.trim()
+	}
+	return latestVersion
+}
+
+function parseVersion(version: string | null): any {
+	if (version === null || version === 'continuous' || version === 'NotFound') return null
+	try {
+		const matchResult = version.match(/(\d+)\.(\d+)\.(\d+)-r(\d)+\.(.+)/) || []
+		return {
+			year: parseInt(matchResult[1]),
+			month: parseInt(matchResult[2]),
+			day: parseInt(matchResult[3]),
+			revision: parseInt(matchResult[4]),
+			commit: matchResult[5] || ''
+		}
+	} catch (e) {
+		console.trace(e)
+		return null
+	}
+}
+
+export function isUpdateAvailable(): boolean {
+	const currentVersionObj: any = parseVersion(currentVersion)
+	const latestVersionObj: any = parseVersion(latestVersion)
+	if (currentVersionObj === null || latestVersionObj === null) return false
+	if (latestVersionObj.year > currentVersionObj.year) return true
+	if (latestVersionObj.month > currentVersionObj.month) return true
+	if (latestVersionObj.day > currentVersionObj.day) return true
+	if (latestVersionObj.revision > currentVersionObj.revision) return true
+	if (latestVersionObj.commit !== currentVersionObj.commit) return true
+	return false
 }
 
 export const plugins: any = {

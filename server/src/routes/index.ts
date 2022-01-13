@@ -1,9 +1,8 @@
-import fs from 'fs'
 import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { GUI_PACKAGE } from '../helpers/paths'
-import { sessionDZ, getQueue, deemixVersion, isDeezerAvailable, plugins } from '../main'
+import { consoleInfo } from '../helpers/errors'
+import { sessionDZ, getQueue, deemixVersion, currentVersion, isDeezerAvailable, plugins, getSettings } from '../main'
 
 const router = express.Router()
 let update: any = null
@@ -13,12 +12,10 @@ router.get('/connect', async (req, res) => {
 	const dz = sessionDZ[req.session.id]
 
 	if (!update) {
-		const currentVersion = JSON.parse(String(fs.readFileSync(GUI_PACKAGE))).version
-		console.log(currentVersion)
+		consoleInfo(`Currently running deemix-gui version ${currentVersion}`)
+		consoleInfo(`deemix-lib version ${deemixVersion}`)
 		update = {
-			currentCommit: currentVersion === '0.0.0' ? 'continuous' : currentVersion,
-			latestCommit: null,
-			updateAvailable: false,
+			currentCommit: currentVersion,
 			deemixVersion
 		}
 	}
@@ -28,8 +25,11 @@ router.get('/connect', async (req, res) => {
 		autologin: !dz.logged_in,
 		currentUser: dz.current_user,
 		deezerAvailable: await isDeezerAvailable(),
-		spotifyEnabled: plugins.spotify.enabled
+		spotifyEnabled: plugins.spotify.enabled,
+		settingsData: getSettings()
 	}
+
+	if (result.settingsData.settings.autoCheckForUpdates) result.checkForUpdates = true
 
 	const queue = getQueue()
 

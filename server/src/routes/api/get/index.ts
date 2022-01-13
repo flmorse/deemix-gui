@@ -16,6 +16,7 @@ import getUserSpotifyPlaylists from './getUserSpotifyPlaylists'
 import getUserFavorites from './getUserFavorites'
 import getQueue from './getQueue'
 import spotifyStatus from './spotifyStatus'
+import checkForUpdates from './checkForUpdates'
 
 export default [
 	albumSearch,
@@ -35,5 +36,6 @@ export default [
 	getUserSpotifyPlaylists,
 	getUserFavorites,
 	getQueue,
-	spotifyStatus
+	spotifyStatus,
+	checkForUpdates
 ]
