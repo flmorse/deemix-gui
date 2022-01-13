@@ -4,7 +4,7 @@ import { Deezer } from 'deezer-js'
 import { sessionDZ, startQueue, isDeezerAvailable } from '../../../main'
 import { ApiHandler } from '../../../types'
 
-export interface RawLoginArlQuery {
+export interface RawLoginArlBody {
 	arl: string
 	child?: number
 }
@@ -17,26 +17,26 @@ const LoginStatus = {
 	FORCED_SUCCESS: 3
 }
 
-const path: ApiHandler['path'] = '/login-arl'
+const path: ApiHandler['path'] = '/loginArl'
 
-const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _) => {
+const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 
-	if (!req.query) {
+	if (!req.body) {
 		return res.status(400).send()
 	}
 
-	if (!req.query.arl) {
+	if (!req.body.arl) {
 		return res.status(400).send()
 	}
 
-	const loginParams: (string | number)[] = [req.query.arl]
+	const loginParams: (string | number)[] = [req.body.arl]
 
 	// TODO Handle the child === 0 case, don't want to rely on the login_via_arl default param (it may change in the
 	//  future)
-	if (req.query.child) {
-		loginParams.push(req.query.child)
+	if (req.body.child) {
+		loginParams.push(req.body.child)
 	}
 
 	let response
@@ -61,7 +61,7 @@ const handler: RequestHandler<{}, {}, {}, RawLoginArlQuery> = async (req, res, _
 	if (!(await isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE
 	const returnValue = {
 		status: response,
-		arl: req.query.arl,
+		arl: req.body.arl,
 		user: dz.current_user,
 		childs: dz.childs,
 		currentChild: dz.selected_account

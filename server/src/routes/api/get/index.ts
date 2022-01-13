@@ -1,5 +1,4 @@
 import analyzeLink from './analyzeLink'
-import changeAccount from './changeAccount'
 import getHome from './getHome'
 import getCharts from './getCharts'
 import mainSearch from './mainSearch'
@@ -20,7 +19,6 @@ import spotifyStatus from './spotifyStatus'
 
 export default [
 	albumSearch,
-	changeAccount,
 	analyzeLink,
 	getHome,
 	getCharts,

@@ -1,9 +1,9 @@
 import { appSendPost } from '../../../../tests/utils'
 
-describe('login-arl requests', () => {
+describe('loginArl requests', () => {
 	it('should respond 200 to calls with arl', async () => {
 		const responseStatusCollector: number[] = []
-		const batchCalls = ['/api/login-arl/?arl=abcdef1234']
+		const batchCalls = ['/api/loginArl/?arl=abcdef1234']
 
 		for (const uri of batchCalls) {
 			responseStatusCollector.push((await appSendPost(uri)).status)
@@ -15,7 +15,7 @@ describe('login-arl requests', () => {
 
 	it('should respond 400 to calls without arl', async () => {
 		const responseStatusCollector: number[] = []
-		const batchCalls = ['/api/login-arl/', '/api/login-arl/?dummy=test', '/api/login-arl/?email=aaa@aa.com']
+		const batchCalls = ['/api/loginArl/', '/api/loginArl/?dummy=test', '/api/loginArl/?email=aaa@aa.com']
 
 		for (const uri of batchCalls) {
 			responseStatusCollector.push((await appSendPost(uri)).status)
@@ -25,14 +25,14 @@ describe('login-arl requests', () => {
 	})
 
 	it('should login using ARL', async () => {
-		const response = await appSendPost(`/api/login-arl/?arl=${process.env.DEEZER_ARL}`)
+		const response = await appSendPost(`/api/loginArl/?arl=${process.env.DEEZER_ARL}`)
 
 		expect(response.status).toBe(200)
 		expect(response.body.status).toBe(true)
 	})
 
 	it('should not login using wrong ARL', async () => {
-		const response = await appSendPost(`/api/login-arl/?arl=abcdef1234`)
+		const response = await appSendPost(`/api/loginArl/?arl=abcdef1234`)
 
 		expect(response.status).toBe(200)
 		expect(response.body.status).toBe(false)

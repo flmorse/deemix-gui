@@ -1,6 +1,7 @@
-import loginArl from './login-arl'
+import changeAccount from './changeAccount'
+import loginArl from './loginArl'
 import addToQueue from './addToQueue'
-import loginWithCredentials from './loginWithCredentials'
+import loginEmail from './loginEmail'
 import cancelAllDownloads from './cancelAllDownloads'
 import removeFinishedDownloads from './removeFinishedDownloads'
 import removeFromQueue from './removeFromQueue'
@@ -8,9 +9,10 @@ import logout from './logout'
 import saveSettings from './saveSettings'
 
 export default [
+	changeAccount,
 	loginArl,
 	addToQueue,
-	loginWithCredentials,
+	loginEmail,
 	cancelAllDownloads,
 	removeFinishedDownloads,
 	removeFromQueue,

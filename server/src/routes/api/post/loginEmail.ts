@@ -1,7 +1,7 @@
 import { ApiHandler } from '../../../types'
 import { getAccessToken, getArlFromAccessToken } from '../../../main'
 
-const path = '/loginWithCredentials'
+const path = '/loginEmail'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	const { email, password } = req.body
