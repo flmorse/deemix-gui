@@ -11,7 +11,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 
 	const url = req.body.url.split(/[\s;]+/)
 	let bitrate = req.body.bitrate
-	if (bitrate === 'null') bitrate = getSettings().settings.maxBitrate
+	if (bitrate === 'null' || bitrate === null) bitrate = getSettings().settings.maxBitrate
 	let obj: any
 
 	try {
