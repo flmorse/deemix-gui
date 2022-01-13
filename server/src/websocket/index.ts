@@ -9,8 +9,6 @@ import wsModules from './modules'
 export const registerWebsocket = (wss: WsServer) => {
 	wss.on('connection', ws => {
 		ws.on('message', message => {
-			consoleInfo(`Received: ${message}`)
-
 			const data = JSON.parse(message.toString())
 
 			wsModules.forEach(module => {

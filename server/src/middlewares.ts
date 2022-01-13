@@ -15,10 +15,6 @@ declare module 'express-session' {
 }
 
 export function registerMiddlewares(app: Application) {
-	if (process.env.NODE_ENV !== 'test') {
-		app.use(logger('dev'))
-	}
-
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
 	app.use(cookieParser())
@@ -33,4 +29,8 @@ export function registerMiddlewares(app: Application) {
 		})
 	)
 	app.use(express.static(WEBUI_DIR))
+
+	if (process.env.NODE_ENV === 'development') {
+		app.use(logger('dev'))
+	}
 }
