@@ -221,8 +221,10 @@ export async function startQueue(dz: any): Promise<any> {
 		}
 		currentJob = true // lock currentJob
 
-		const currentUUID: string = queueOrder.shift() || ''
-		console.log(currentUUID)
+		let currentUUID: string
+		do {
+			currentUUID = queueOrder.shift() || ''
+		} while (queue[currentUUID] === undefined && queueOrder.length)
 		queue[currentUUID].status = 'downloading'
 		const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${currentUUID}.json`).toString())
 		let downloadObject: any
